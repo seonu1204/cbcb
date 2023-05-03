@@ -18,8 +18,8 @@ public class Place {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private String place_id;
+
     private String place_name;
     private String address;
     private String contact;
@@ -30,6 +30,7 @@ public class Place {
     private String page_url;
     private String reservation;
     private String facils;
+    private String theme;
     private int place_like;
 
 }

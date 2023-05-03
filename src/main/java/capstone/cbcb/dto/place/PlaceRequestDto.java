@@ -22,6 +22,7 @@ public class PlaceRequestDto {
     private String page_url;
     private String reservation;
     private String facils;
+    private String theme;
     private int place_like;
 
     public PlaceRequestDto(Place entity) {
@@ -36,6 +37,7 @@ public class PlaceRequestDto {
         this.page_url = entity.getPage_url();
         this.reservation = entity.getReservation();
         this.facils = entity.getFacils();
+        this.theme = entity.getTheme();
         this.place_like = entity.getPlace_like();
     }
 
