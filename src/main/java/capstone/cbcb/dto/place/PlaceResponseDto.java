@@ -28,7 +28,6 @@ public class PlaceResponseDto {
         this.address = entity.getAddress();
         this.contact = entity.getContact();
         this.camp_env = entity.getCamp_env();
-        this.camp_type = entity.getCamp_type();
         this.season = entity.getSeason();
         this.operation_day = entity.getOperation_day();
         this.page_url = entity.getPage_url();
@@ -37,4 +36,8 @@ public class PlaceResponseDto {
         this.theme = entity.getTheme();
         this.place_like = entity.getPlace_like();
     }
+
+
+
+
 }
