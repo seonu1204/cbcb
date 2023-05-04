@@ -16,8 +16,8 @@ public class Place {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private String place_id;
+
     private String place_name;
     private String address;
     private String contact;

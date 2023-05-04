@@ -1,6 +1,6 @@
 //package capstone.cbcb.domain.userplace;
 //
-//import capstone.cbcb.dto.place.UserPlaceResponseDto;
+
 //import jakarta.persistence.Entity;
 //import jakarta.persistence.GeneratedValue;
 //import jakarta.persistence.GenerationType;
