@@ -18,14 +18,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     // 검색 ( 이름 or 주소 )
     List<Place> findByNameContainsOrAddressContains(String keyword);
 
-
-
-
-
-
-
-
-
     // 장소 상세정보
     
     // 장소 즐겨찾기 목록 조회

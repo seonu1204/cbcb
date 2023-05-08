@@ -13,6 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor // Repository를 주입하기 위해 사용
+
 @Service
 public class PlaceService {
 
