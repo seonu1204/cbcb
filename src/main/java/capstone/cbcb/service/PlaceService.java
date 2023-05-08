@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor // Repository를 주입하기 위해 사용
+@RequiredArgsConstructor // Repository 를 주입하기 위해 사용
 
 @Service
 public class PlaceService {
@@ -25,7 +25,7 @@ public class PlaceService {
         List<Place> themeList = placeRepository.findByThemeContains(theme);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
-        // dto로 변환
+        // dto 로 변환
         for( Place place : themeList ) {
             PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
             placeResponseDtoList.add(placeResponseDto);
@@ -67,7 +67,6 @@ public class PlaceService {
 
     }
 
-
     // 검색 (장소 이름 기준)
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByName(String keyword) {
@@ -81,23 +80,5 @@ public class PlaceService {
             placeResponseDtoList.add(placeResponseDto);
         }
         return placeResponseDtoList;
-
     }
-
-
-//    // 장소 1개 조회 (상세정보)
-//    @Transactional(readOnly = true)
-//    public PlaceResponseDto getDetails(String place_id) {
-//        Place place = placeRepository.findById(place_id);
-//        return new PlaceResponseDto(place);
-//    }
-
-
-//    // 즐겨찾기
-//    @Transactional
-//    public PlaceResponseDto bookmark(String place_id) {
-//        Place place = placeRepository.bookmark();
-//        return new PlaceResponseDto(place);
-//    }
-
 }

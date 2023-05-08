@@ -23,12 +23,4 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     // 장소 즐겨찾기 목록 조회
     
     // 사용자 등록 장소 목록 조회
-    
-    
-
-
-
-
-
-
 }
