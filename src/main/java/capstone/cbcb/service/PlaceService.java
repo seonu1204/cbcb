@@ -17,13 +17,11 @@ import java.util.List;
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
-//    private final UserPlaceRepository userPlaceRepository;
-
 
     // 테마별 리스트 데이터
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByTheme(String theme) {
-        List<Place> themeList = placeRepository.findByTheme(theme);
+        List<Place> themeList = placeRepository.findByThemeContains(theme);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto로 변환
@@ -39,7 +37,7 @@ public class PlaceService {
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByAddress(String loc) {
 
-        List<Place> locList = placeRepository.findByAddress(loc);
+        List<Place> locList = placeRepository.findByAddressContains(loc);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto로 변환
@@ -56,7 +54,7 @@ public class PlaceService {
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByAddressAndTheme(String loc, String theme) {
 
-        List<Place> placeList = placeRepository.findByAddressAndTheme(loc, theme);
+        List<Place> placeList = placeRepository.findByAddressContainsAndThemeContains(loc, theme);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto로 변환
@@ -69,8 +67,24 @@ public class PlaceService {
     }
 
 
+    // 검색 (장소 이름 기준)
+    @Transactional(readOnly = true)
+    public List<PlaceResponseDto> findByName(String keyword) {
 
-//    // 상세정보
+        List<Place> placeList = placeRepository.findByNameContainsOrAddressContains(keyword);
+        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
+        // dto로 변환
+        for( Place place : placeList ) {
+            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+            placeResponseDtoList.add(placeResponseDto);
+        }
+        return placeResponseDtoList;
+
+    }
+
+
+//    // 장소 1개 조회 (상세정보)
 //    @Transactional(readOnly = true)
 //    public PlaceResponseDto getDetails(String place_id) {
 //        Place place = placeRepository.findById(place_id);

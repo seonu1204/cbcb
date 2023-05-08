@@ -1,4 +1,4 @@
 package capstone.cbcb.controller;
 
-public class UserController {
+public class UserPlaceController {
 }

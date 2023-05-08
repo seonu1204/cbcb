@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 public class PlaceController {
@@ -19,15 +18,15 @@ public class PlaceController {
     private final PlaceService placeService;
 
     // 테마별 리스트 조회
-    @GetMapping("/api/place/{theme}")
+    @GetMapping("/api/place/theme/{theme}")
     public ResponseEntity<List<PlaceResponseDto>> findByTheme(@PathVariable String theme){
         List<PlaceResponseDto> placeResponseDtoList = placeService.findByTheme(theme);
         return ResponseEntity.ok(placeResponseDtoList);
     }
 
     // 지역별 리스트 조회
-    @GetMapping("/api/place")
-    public ResponseEntity<List<PlaceResponseDto>> findByAddress(@RequestParam("loc") String loc){
+    @GetMapping("/api/place/location/{loc}")
+    public ResponseEntity<List<PlaceResponseDto>> findByAddress(@PathVariable String loc){
         List<PlaceResponseDto> placeResponseDtoList = placeService.findByAddress(loc);
         return ResponseEntity.ok(placeResponseDtoList);
     }
@@ -40,6 +39,14 @@ public class PlaceController {
     }
 
 
+    // 검색 목록
+    @GetMapping("/api/search/{keyword}")
+    public ResponseEntity<List<PlaceResponseDto>> search(@PathVariable String keyword){
+        List<PlaceResponseDto> placeResponseDtoList = placeService.findByName(keyword);
+        return ResponseEntity.ok(placeResponseDtoList);
+    }
+
+
 
 //    // 장소 상세정보 조회
 //    @GetMapping("/api/place/{place_id}")
@@ -48,6 +55,7 @@ public class PlaceController {
 //    }
 
 
+      // 로그인/회원가입 구현 후 작성
 //    // 장소 즐겨찾기
 //    @PostMapping("/api/place/{place_id}")
 //    public PlaceResponseDto bookmark(@PathVariable String place_id) {
@@ -55,8 +63,5 @@ public class PlaceController {
 //        return placeService.bookmark(place_id);
 //
 //    }
-
-
-    // 사용자 장소 등록
 
 }
