@@ -22,7 +22,6 @@ public class Place {
     private String address;
     private String contact;
     private String camp_env;
-    private String camp_type;
     private String season;
     private String operation_day;
     private String page_url;

@@ -34,20 +34,52 @@ public class PlaceService {
     }
 
 
-//    // 지역별 리스트 데이터
-//    @Transactional(readOnly = true)
-//    public List<PlaceResponseDto> findByLoc(String loc) {
-//        List<PlaceResponseDto> locList = placeRepository.findByLoc(loc);
-//        return locList;
-//    }
-//
-//    // 상세정보
-//    @Transactional(readOnly = true)
-//    public PlaceResponseDto getDetails(String place_id) {
-//        Place place = placeRepository.findById(place_id);
-//        return new PlaceResponseDto(place);
-//    }
+    // 지역별 리스트 데이터
+    @Transactional(readOnly = true)
+    public List<PlaceResponseDto> findByAddress(String loc) {
 
+        List<Place> locList = placeRepository.findByAddress(loc);
+        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
+        // dto로 변환
+        for( Place place : locList ) {
+            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+            placeResponseDtoList.add(placeResponseDto);
+        }
+        return placeResponseDtoList;
+
+    }
+
+
+    // 지역&테마별 리스트 데이터
+    @Transactional(readOnly = true)
+    public List<PlaceResponseDto> findByAddressAndTheme(String loc, String theme) {
+
+        List<Place> placeList = placeRepository.findByAddressAndTheme(loc, theme);
+        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
+        // dto로 변환
+        for( Place place : placeList ) {
+            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+            placeResponseDtoList.add(placeResponseDto);
+        }
+        return placeResponseDtoList;
+
+    }
+
+    // 상세정보
+    @Transactional(readOnly = true)
+    public List<PlaceResponseDto> findById(String place_id) {
+        List<Place> detailList = placeRepository.findById(place_id);
+        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
+        // dto로 변환
+        for(Place place : detailList) {
+            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+            placeResponseDtoList.add(placeResponseDto);
+        }
+        return placeResponseDtoList;
+    }
 
 //    // 즐겨찾기
 //    @Transactional
