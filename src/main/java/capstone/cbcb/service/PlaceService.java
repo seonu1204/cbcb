@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor // Repository 를 주입하기 위해 사용
@@ -81,4 +82,18 @@ public class PlaceService {
         }
         return placeResponseDtoList;
     }
+
+
+    // 장소 1개 검색(상세 정보)
+    @Transactional(readOnly = true)
+    public PlaceResponseDto findById(String keyword) {
+        Place place = placeRepository.findById(keyword);
+        return new PlaceResponseDto(place);
+    }
+
+    // 장소 즐겨찾기
+
+
+
+
 }

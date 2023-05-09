@@ -3,6 +3,7 @@ package capstone.cbcb.domain.place;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 
@@ -19,6 +20,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     List<Place> findByNameContainsOrAddressContains(String keyword);
 
     // 장소 상세정보
+    Place findById(String id);
     
     // 장소 즐겨찾기 목록 조회
     

@@ -38,7 +38,6 @@ public class PlaceController {
         return ResponseEntity.ok(placeResponseDtoList);
     }
 
-<<<<<<< HEAD
 
     // 검색 목록
     @GetMapping("/api/search/{keyword}")
@@ -48,29 +47,20 @@ public class PlaceController {
     }
 
 
-
-//    // 장소 상세정보 조회
-//    @GetMapping("/api/place/{place_id}")
-//    public PlaceResponseDto details(@PathVariable String place_id) {
-//        return placeService.getDetails(place_id);
-//    }
-=======
     // 장소 상세정보 조회
     @GetMapping("/api/place/detail/{place_id}")
-    public ResponseEntity<List<PlaceResponseDto>> findById(@PathVariable String place_id){
-        List<PlaceResponseDto> placeResponseDtoList = placeService.findById(place_id);
-        return ResponseEntity.ok(placeResponseDtoList);
+    public ResponseEntity<PlaceResponseDto> findById(@PathVariable String place_id){
+        PlaceResponseDto place = placeService.findById(place_id);
+        return ResponseEntity.ok(place);
     }
->>>>>>> efff5e8fabef19d716279961cce58fe11539d823
+
+    // 장소 즐겨찾기
+    @PostMapping("/api/place/{place_id}")
+    public ResponseEntity<PlaceResponseDto> bookmark(@PathVariable String place_id) {
+
+    }
 
 
-      // 로그인/회원가입 구현 후 작성
-//    // 장소 즐겨찾기
-//    @PostMapping("/api/place/{place_id}")
-//    public PlaceResponseDto bookmark(@PathVariable String place_id) {
-//        Place place = placeService.findById(place_id);
-//        return placeService.bookmark(place_id);
-//
-//    }
+
 
 }
