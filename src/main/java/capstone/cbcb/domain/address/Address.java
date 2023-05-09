@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Getter
-@Setter
 @Entity
 public class Address {
     @Id
@@ -23,4 +22,5 @@ public class Address {
     private String gpe;
     private String city;
     private String detail;
+
 }

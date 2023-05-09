@@ -13,7 +13,6 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor // Repository를 주입하기 위해 사용
-
 @Service
 public class PlaceService {
 
@@ -22,7 +21,7 @@ public class PlaceService {
     // 테마별 리스트 데이터
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByTheme(String theme) {
-        List<Place> themeList = placeRepository.findByTheme(theme);
+        List<Place> themeList = placeRepository.findByThemeContains(theme);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto로 변환
@@ -38,7 +37,7 @@ public class PlaceService {
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByAddress(String loc) {
 
-        List<Place> locList = placeRepository.findByAddress(loc);
+        List<Place> locList = placeRepository.findByAddressContains(loc);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto로 변환
@@ -55,7 +54,7 @@ public class PlaceService {
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByAddressAndTheme(String loc, String theme) {
 
-        List<Place> placeList = placeRepository.findByAddressAndTheme(loc, theme);
+        List<Place> placeList = placeRepository.findByAddressContainsAndThemeContains(loc, theme);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto로 변환
@@ -67,19 +66,31 @@ public class PlaceService {
 
     }
 
-    // 상세정보
+
+    // 검색 (장소 이름 기준)
     @Transactional(readOnly = true)
-    public List<PlaceResponseDto> findById(String place_id) {
-        List<Place> detailList = placeRepository.findById(place_id);
+    public List<PlaceResponseDto> findByName(String keyword) {
+
+        List<Place> placeList = placeRepository.findByNameContainsOrAddressContains(keyword);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto로 변환
-        for(Place place : detailList) {
+        for( Place place : placeList ) {
             PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
             placeResponseDtoList.add(placeResponseDto);
         }
         return placeResponseDtoList;
+
     }
+
+
+//    // 장소 1개 조회 (상세정보)
+//    @Transactional(readOnly = true)
+//    public PlaceResponseDto getDetails(String place_id) {
+//        Place place = placeRepository.findById(place_id);
+//        return new PlaceResponseDto(place);
+//    }
+
 
 //    // 즐겨찾기
 //    @Transactional
