@@ -37,26 +37,18 @@ public class PlaceController {
         return ResponseEntity.ok(placeResponseDtoList);
     }
 
-
     // 검색 목록
     @GetMapping("/api/place/search/{keyword}")
     public ResponseEntity<List<PlaceResponseDto>> search(@PathVariable String keyword){
         List<PlaceResponseDto> placeResponseDtoList = placeService.findByName(keyword);
-
-        // 확인
-        log.info(placeResponseDtoList.toString());
-
-
         return ResponseEntity.ok(placeResponseDtoList);
-
     }
 
-//    // 장소 상세정보 조회
-//    @GetMapping("/api/place/detail/{place_id}")
-//    public ResponseEntity<PlaceResponseDto> findById(@PathVariable String place_id){
-//        PlaceResponseDto place = placeService.findById(place_id);
-//        return ResponseEntity.ok(place);
-//
-//    }
+    // 장소 상세정보 조회
+    @GetMapping("/api/place/detail/{place_id}")
+    public ResponseEntity<PlaceResponseDto> findById(@PathVariable String place_id){
+        PlaceResponseDto place = placeService.findById(place_id);
+        return ResponseEntity.ok(place);
+    }
 
 }

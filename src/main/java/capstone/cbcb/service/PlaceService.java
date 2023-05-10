@@ -83,18 +83,15 @@ public class PlaceService {
 
     }
 
-
-//    // 장소 1개 검색(상세 정보)
-//    @Transactional(readOnly = true)
-//    public PlaceResponseDto findById(String id) {
-//        Place place = placeRepository.findById(id);
-//        return new PlaceResponseDto(place);
-//    }
+    // 장소 1개 검색(상세 정보)
+    @Transactional(readOnly = true)
+    public PlaceResponseDto findById(String id) {
+        Place place = placeRepository.findById(id);
+        return new PlaceResponseDto(place);
+    }
 
 //    // 장소 즐겨찾기
-//    public PlaceResponseDto bookmark(String place_id, User user) {
-//
-//    }
+
 
 
 }

@@ -27,7 +27,7 @@ public class UserPlace {
     private int report;
 
 
-    // 업데이트 ??
+    // 업데이트
     public void update(UserPlaceResponseDto userPlaceResponseDto) {
         this.userPlaceId = userPlaceResponseDto.getUserPlaceId();
         this.userPlaceLike = userPlaceResponseDto.getUserPlaceLike();

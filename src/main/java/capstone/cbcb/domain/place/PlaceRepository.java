@@ -22,8 +22,9 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
             " p.address like %:keyword%", nativeQuery = true)
     List<Place> findByNameContainsOrAddressContains(@Param(value = "keyword") String keyword);
 
-//    // 장소 상세정보
-//    Place findById(String id);
+    // 장소 상세정보
+    @Query(value = "select * from place p where p.place_id = :id", nativeQuery = true)
+    Place findById(@Param(value = "id") String id);
 
     // 장소 즐겨찾기 목록 조회
 
