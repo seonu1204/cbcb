@@ -1,4 +1,4 @@
-package capstone.cbcb.domain.coordinate;
+package capstone.cbcb.domain.bookmark;
 
 
 import jakarta.persistence.*;
@@ -14,19 +14,17 @@ import java.io.Serializable;
 @Builder
 @Getter
 @Entity
-@IdClass(CoordinateId.class)
-public class Coordinate implements Serializable {
+@IdClass(BookmarkId.class)
+public class Bookmark implements Serializable {
 
     @Id
-    @Column(name = "latitude")
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String latitude;
+    private int userId;
 
     @Id
-    @Column(name = "longitude")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String longitude;
-
     @Column(name = "place_id")
-    private String place_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String placeId;
+
 }

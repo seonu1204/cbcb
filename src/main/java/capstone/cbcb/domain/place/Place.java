@@ -4,13 +4,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
-@Setter
 @Entity
 public class Place {
 
@@ -18,7 +20,7 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String place_id;
 
-    private String place_name;
+    private String placeName;
     private String address;
     private String contact;
     private String camp_env;
@@ -29,4 +31,5 @@ public class Place {
     private String facils;
     private String theme;
     private int place_like;
+
 }

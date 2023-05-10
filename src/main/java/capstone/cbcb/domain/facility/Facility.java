@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Getter
-@Setter
 @Entity
 public class Facility {
 

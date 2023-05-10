@@ -24,10 +24,19 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// Apache Commons
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+	implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
+	implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+	// JWT Token
+	implementation group: 'com.auth0', name: 'java-jwt', version: '3.4.0'
+
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+

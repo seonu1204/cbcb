@@ -26,7 +26,7 @@ public class PlaceRequestDto {
 
     public PlaceRequestDto(Place entity) {
         this.place_id = entity.getPlace_id();
-        this.place_name = entity.getPlace_name();
+        this.place_name = entity.getPlaceName();
         this.address = entity.getAddress();
         this.contact = entity.getContact();
         this.camp_env = entity.getCamp_env();

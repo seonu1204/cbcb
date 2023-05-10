@@ -10,12 +10,11 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Getter
-@Setter
 @Entity
 public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private String address_id;
 
     private String place_id;
@@ -23,4 +22,5 @@ public class Address {
     private String gpe;
     private String city;
     private String detail;
+
 }

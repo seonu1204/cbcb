@@ -1,4 +1,4 @@
-package capstone.cbcb.domain.file.place;
-
-public class PlaceImage {
-}
+//package capstone.cbcb.domain.file.place;
+//
+//public class PlaceImage {
+//}

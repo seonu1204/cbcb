@@ -1,4 +1,6 @@
 package capstone.cbcb.domain.coordinate;
 
-public class CoordinateRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CoordinateRepository extends JpaRepository<Coordinate, Long> {
 }

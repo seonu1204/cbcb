@@ -1,6 +1,5 @@
 package capstone.cbcb.controller;
 
-
 import capstone.cbcb.dto.place.PlaceResponseDto;
 import capstone.cbcb.service.PlaceService;
 import lombok.RequiredArgsConstructor;
@@ -40,27 +39,24 @@ public class PlaceController {
 
 
     // 검색 목록
-    @GetMapping("/api/search/{keyword}")
+    @GetMapping("/api/place/search/{keyword}")
     public ResponseEntity<List<PlaceResponseDto>> search(@PathVariable String keyword){
         List<PlaceResponseDto> placeResponseDtoList = placeService.findByName(keyword);
+
+        // 확인
+        log.info(placeResponseDtoList.toString());
+
+
         return ResponseEntity.ok(placeResponseDtoList);
-    }
-
-
-    // 장소 상세정보 조회
-    @GetMapping("/api/place/detail/{place_id}")
-    public ResponseEntity<PlaceResponseDto> findById(@PathVariable String place_id){
-        PlaceResponseDto place = placeService.findById(place_id);
-        return ResponseEntity.ok(place);
-    }
-
-    // 장소 즐겨찾기
-    @PostMapping("/api/place/{place_id}")
-    public ResponseEntity<PlaceResponseDto> bookmark(@PathVariable String place_id) {
 
     }
 
-
-
+//    // 장소 상세정보 조회
+//    @GetMapping("/api/place/detail/{place_id}")
+//    public ResponseEntity<PlaceResponseDto> findById(@PathVariable String place_id){
+//        PlaceResponseDto place = placeService.findById(place_id);
+//        return ResponseEntity.ok(place);
+//
+//    }
 
 }

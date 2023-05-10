@@ -1,10 +1,12 @@
 package capstone.cbcb.domain.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+//import capstone.cbcb.dto.user.UserUpdateRequestDto;
+
+
+
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,4 +27,11 @@ public class User {
     private String phone_number;
     private int eco_lv;
     private String nickname;
+
+//    public void userUpdate(String email, UserUpdateRequestDto userUpdateRequestDto) {
+////        this.name = name;
+////        this.mycar = mycar;
+////        this.phone_number = phone_number;
+////        this.nickname = nickname;
+////    }
 }
