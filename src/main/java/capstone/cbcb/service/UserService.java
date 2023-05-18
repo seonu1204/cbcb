@@ -1,9 +1,7 @@
 package capstone.cbcb.service;
 
-import capstone.cbcb.domain.place.Place;
 import capstone.cbcb.domain.user.User;
 import capstone.cbcb.domain.user.UserRepository;
-import capstone.cbcb.dto.place.PlaceResponseDto;
 import capstone.cbcb.dto.user.LoginRequestDTO;
 import capstone.cbcb.dto.user.UserRequestDto;
 
@@ -20,8 +18,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Slf4j
 @Service

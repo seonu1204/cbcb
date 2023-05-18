@@ -53,22 +53,45 @@ public class UserController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO dto) throws Exception {
-
-        // 로그인 아이디 없음
-        // 비밀번호 없음
-        if (StringUtils.isEmpty(dto.getEmail())
-                || StringUtils.isEmpty(dto.getPassword())) {
+        // 이메일과 비밀번호가 없을 경우
+        if (StringUtils.isEmpty(dto.getEmail()) || StringUtils.isEmpty(dto.getPassword())) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        // Create Token
-        String jwtToken = userService.login(dto);
-        jwtFactory.addValidToken(jwtToken);
+        // 사용자 정보 가져오기
+        User entity = userRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new Exception("존재하지 않는 유저 정보 입니다."));
 
-        Set<String> validTokens = jwtFactory.getValidTokens();
-        log.info("Current valid tokens: {}", validTokens);
+        // 비밀번호 일치 확인
+        if (!entity.getPassword().equals(dto.getPassword())) {
+            throw new Exception("잘못된 비밀번호 입니다 확인후 로그인해주세요.");
+        }
 
-        return ResponseEntity.ok(new LoginResponseDTO(jwtToken));
+        // 토큰 생성
+        String jwtToken = jwtFactory.generateAccessToken(
+                entity.getUser_id(),
+                entity.getEmail(),
+                entity.getName(),
+                entity.getMycar(),
+                entity.getEco_lv(),
+                entity.getNickname(),
+                entity.getPhone_number()
+        );
+
+        // 응답 DTO 생성
+        LoginResponseDTO responseDTO = LoginResponseDTO.builder()
+                .jwtToken(jwtToken)
+                .user_id(entity.getUser_id())
+                .name(entity.getName())
+                .email(entity.getEmail())
+                .password(entity.getPassword())
+                .mycar(entity.getMycar())
+                .phone_number(entity.getPhone_number())
+                .eco_lv(entity.getEco_lv())
+                .nickname(entity.getNickname())
+                .build();
+
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping("/test")
