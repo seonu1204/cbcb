@@ -39,6 +39,7 @@ public class User {
     }
 
     public void userUpdate(UserUpdateRequestDto userUpdateRequestDto) {
+        this.password = userUpdateRequestDto.getPassword();
         this.name = userUpdateRequestDto.getName();
         this.mycar = userUpdateRequestDto.getMycar();
         this.phone_number = userUpdateRequestDto.getPhone_number();

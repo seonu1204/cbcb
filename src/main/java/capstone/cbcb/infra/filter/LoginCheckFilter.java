@@ -20,7 +20,7 @@ public class LoginCheckFilter extends OncePerRequestFilter {
 
     private JwtFactory jwtFactory;
     //로그인이 필요하지 않은 페이지 url 요청들
-    private static final String[] whitelist = {"/", "/api/user/join", "/api/user/login", "/api/place/*", "/api/user/profile/*", "/api/user/*"};
+    private static final String[] whitelist = {"/", "/api/user/join", "/api/user/login", "/api/place/*", "/api/user/profile/*", "/api/user/*", "/home"};
 
 
 
@@ -58,7 +58,7 @@ public class LoginCheckFilter extends OncePerRequestFilter {
             }else {
                 return;
             }
-            HttpSession session = httpRequest.getSession(true);
+            HttpSession session = httpRequest.getSession(false);
         if( session == null || session.getAttribute(USER) == null){
 
             session.setAttribute(USER, user);
@@ -77,5 +77,6 @@ public class LoginCheckFilter extends OncePerRequestFilter {
         return !PatternMatchUtils.simpleMatch(whitelist, requestURI);
         // 매칭이 되지 않을 때 검증을 해야하기 때문에 부정해준다.
     }
+
 
 }

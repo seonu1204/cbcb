@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UserUpdateRequestDto {
     private String email;
+    private String password;
     private String name;
     private String mycar;
     private String phone_number;

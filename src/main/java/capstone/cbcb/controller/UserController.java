@@ -2,7 +2,9 @@ package capstone.cbcb.controller;
 
 import capstone.cbcb.domain.user.User;
 import capstone.cbcb.domain.user.UserRepository;
+import capstone.cbcb.dto.place.PlaceResponseDto;
 import capstone.cbcb.dto.user.*;
+import capstone.cbcb.infra.jwt.JwtFactory;
 import capstone.cbcb.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RequestMapping("/api/user")
@@ -25,6 +28,8 @@ public class UserController {
     private final UserRepository userRepository;
 
     private final UserService userService;
+
+    private final JwtFactory jwtFactory;
 
     // 회원가입
     @PostMapping("/join")
@@ -58,6 +63,10 @@ public class UserController {
 
         // Create Token
         String jwtToken = userService.login(dto);
+        jwtFactory.addValidToken(jwtToken);
+
+        Set<String> validTokens = jwtFactory.getValidTokens();
+        log.info("Current valid tokens: {}", validTokens);
 
         return ResponseEntity.ok(new LoginResponseDTO(jwtToken));
     }
@@ -68,22 +77,39 @@ public class UserController {
         System.out.printf("user");
     }
 
+    // 사용자 정보 수정
     @PatchMapping("/profile/{email}")
     public void userUpdate(@PathVariable String email, @RequestBody UserUpdateRequestDto userUpdateRequestDto) throws Exception {
         userService.userUpdate(email, userUpdateRequestDto);
     }
 
     // 로그아웃
-    @PostMapping ("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
-        userService.logout(request, response);
-        return ResponseEntity.ok().build();
+        // 토큰 무효화
+        String token = request.getHeader(JwtFactory.HEADER_ACCESS_TOKEN);
+        if (token != null) {
+            // 토큰 무효화
+            jwtFactory.invalidateToken(token, response);
+
+            return ResponseEntity.ok("로그아웃되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("토큰이 존재하지 않습니다.");
+        }
     }
 
+    // 회원탈퇴
     @DeleteMapping("/{user_id}")
     public ResponseEntity<?> deleteUser(@PathVariable int user_id) {
         userService.deleteUser(user_id);
         return ResponseEntity.ok().build();
+    }
+
+    // 마이페이지
+    @GetMapping("/mypage/{email}")
+    public ResponseEntity<UserResponseDto> myPage(@PathVariable String email) throws Exception {
+        UserResponseDto user = userService.myPage(email);
+        return ResponseEntity.ok(user);
     }
 }
 

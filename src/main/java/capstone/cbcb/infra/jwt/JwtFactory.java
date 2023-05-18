@@ -56,7 +56,7 @@ public class JwtFactory {
 
     }
 
-    public String generateAccessToken(int userId, String email, String name, String myCar, int eco_lv, String nickname  ,String phoneNumber) {
+    public String generateAccessToken(int userId, String email, String name, String myCar, int eco_lv, String nickname, String phoneNumber) {
 
         return JWT.create()
                 .withIssuer(DOMAIN_URL)
@@ -68,7 +68,7 @@ public class JwtFactory {
                 .withClaim(MY_CAR, myCar)
                 .withClaim(ECO_LV, String.valueOf(eco_lv))
                 .withClaim(NICK_NAME, nickname)
-                .withClaim(PHONE_NUMBER,phoneNumber)
+                .withClaim(PHONE_NUMBER, phoneNumber)
                 .sign(generateSign());
     }
 
@@ -89,7 +89,7 @@ public class JwtFactory {
         String myCar = decodedJWT.getClaim(MY_CAR).asString();
         String eco_lv = decodedJWT.getClaim(ECO_LV).asString();
         String nickname = decodedJWT.getClaim(NICK_NAME).asString();
-        String phoneNumber = decodedJWT.getClaim( PHONE_NUMBER).asString();
+        String phoneNumber = decodedJWT.getClaim(PHONE_NUMBER).asString();
 
         return UserDecodeJWTDTO.builder()
                 .email(email)
@@ -123,31 +123,30 @@ public class JwtFactory {
         return Optional.of(decodedJWT);
     }
 
-    // 현재 유효한 토큰 목록
     private Set<String> validTokens = new HashSet<>();
 
-    // 토큰 추가
+    public void invalidateToken(String token, HttpServletResponse response) {
+        if (token != null) {
+            // 현재 유효한 토큰 리스트에서 전달받은 토큰을 삭제합니다.
+            validTokens.remove(token);
+
+            // 토큰을 무효화하기 위해 클라이언트에게 빈 토큰 값을 전달합니다.
+            String emptyToken = "";
+
+            log.info("Token invalidated: {}", token);
+        }
+    }
+
     public void addValidToken(String token) {
         validTokens.add(token);
     }
 
-    // 토큰 삭제
     public void removeValidToken(String token) {
         validTokens.remove(token);
     }
 
-    public void invalidateToken(String token, HttpServletRequest request, HttpServletResponse response) {
-        removeValidToken(token);
-
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.invalidate();
-
-            Cookie sessionCookie = new Cookie("JSESSIONID", null);
-            sessionCookie.setPath("/");
-            sessionCookie.setMaxAge(0);
-            response.addCookie(sessionCookie);
-        }
+    public Set<String> getValidTokens() {
+        return validTokens;
     }
-
 }
+

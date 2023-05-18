@@ -19,6 +19,8 @@ repositories {
 }
 
 dependencies {
+	// 배포 성공했는지 확인하려고 넣은거임
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
@@ -34,6 +36,15 @@ dependencies {
 
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+jar {
+	//enabled = false // JAR 플러그인 활성화
+
+	manifest {
+		attributes 'Main-Class': 'capstone.cbcb.CbcbApplication'
+	}
 }
 
 tasks.named('test') {
