@@ -134,5 +134,6 @@ public class UserController {
         UserResponseDto user = userService.myPage(email);
         return ResponseEntity.ok(user);
     }
+
 }
 
