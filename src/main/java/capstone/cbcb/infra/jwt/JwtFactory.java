@@ -6,6 +6,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,7 +15,11 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+
 
 @Component
 @Slf4j
@@ -50,7 +56,7 @@ public class JwtFactory {
     }
 
 
-    public String generateAccessToken(int userId, String email, String name, String myCar, int eco_lv, String nickname  ,String phoneNumber) {
+    public String generateAccessToken(int userId, String email, String name, String myCar, int eco_lv, String nickname, String phoneNumber) {
 
         return JWT.create()
                 .withIssuer(DOMAIN_URL)
@@ -62,7 +68,7 @@ public class JwtFactory {
                 .withClaim(MY_CAR, myCar)
                 .withClaim(ECO_LV, String.valueOf(eco_lv))
                 .withClaim(NICK_NAME, nickname)
-                .withClaim(PHONE_NUMBER,phoneNumber)
+                .withClaim(PHONE_NUMBER, phoneNumber)
                 .sign(generateSign());
     }
 
@@ -73,14 +79,10 @@ public class JwtFactory {
      * @return : AuthUser
      */
 
-
     public UserDecodeJWTDTO decodeJwt(final String token) throws Exception {
-
 
         DecodedJWT decodedJWT = isValidToken(token)
                 .orElseThrow(() -> new Exception());
-
-
 
         String email = decodedJWT.getClaim(EMAIL).asString();
         String userId = decodedJWT.getClaim(USER_ID).asString();
@@ -88,7 +90,8 @@ public class JwtFactory {
         String myCar = decodedJWT.getClaim(MY_CAR).asString();
         String eco_lv = decodedJWT.getClaim(ECO_LV).asString();
         String nickname = decodedJWT.getClaim(NICK_NAME).asString();
-        String phoneNumber = decodedJWT.getClaim( PHONE_NUMBER).asString();
+        String phoneNumber = decodedJWT.getClaim(PHONE_NUMBER).asString();
+
 
         return UserDecodeJWTDTO.builder()
                 .email(email)
@@ -116,10 +119,37 @@ public class JwtFactory {
         try {
             decodedJWT = verifier.verify(token);
         } catch (Exception e) {
-            throw new Exception(" 잘못된 정보의 TOKEN 입니다. ");
+            throw new Exception("잘못된 정보의 TOKEN 입니다.");
         }
 
         return Optional.of(decodedJWT);
     }
 
+
+    private Set<String> validTokens = new HashSet<>();
+
+    public void invalidateToken(String token, HttpServletResponse response) {
+        if (token != null) {
+            // 현재 유효한 토큰 리스트에서 전달받은 토큰을 삭제합니다.
+            validTokens.remove(token);
+
+            // 토큰을 무효화하기 위해 클라이언트에게 빈 토큰 값을 전달합니다.
+            String emptyToken = "";
+
+            log.info("Token invalidated: {}", token);
+        }
+    }
+
+    public void addValidToken(String token) {
+        validTokens.add(token);
+    }
+
+    public void removeValidToken(String token) {
+        validTokens.remove(token);
+    }
+
+    public Set<String> getValidTokens() {
+        return validTokens;
+    }
 }
+

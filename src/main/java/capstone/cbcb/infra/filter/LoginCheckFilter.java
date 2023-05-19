@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
 @Slf4j
 public class LoginCheckFilter extends OncePerRequestFilter {
 
@@ -21,7 +22,6 @@ public class LoginCheckFilter extends OncePerRequestFilter {
     private static final String[] whitelist = {"/", "/api/user/join", "/api/user/login", "/api/place/*"};
     private final String USER = "USER";
     private JwtFactory jwtFactory;
-
 
     public LoginCheckFilter(JwtFactory jwtFactory) {
         this.jwtFactory = jwtFactory;
@@ -31,11 +31,9 @@ public class LoginCheckFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // url mapping check
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String requestURI = httpRequest.getRequestURI();
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-
 
         // whitelist 에 있는 uri 는 검증을 하지 않기때문에,
         // isLoginCheckPath 메서드에서 매칭되지 않는 경우만 가져온다.

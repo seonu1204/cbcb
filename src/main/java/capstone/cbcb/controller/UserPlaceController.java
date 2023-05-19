@@ -1,5 +1,6 @@
 package capstone.cbcb.controller;
 
+
 import capstone.cbcb.dto.place.UserPlaceRequestDto;
 import capstone.cbcb.dto.place.UserPlaceResponseDto;
 import capstone.cbcb.dto.place.UserPlaceUpdateRequestDTO;
@@ -11,16 +12,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 public class UserPlaceController {
 
+
     private static final String USER = "USER";
-    private final PlaceService placeService;
     private final UserPlaceService userPlaceService;
 
 
@@ -73,5 +75,9 @@ public class UserPlaceController {
 
     // 사용자(본인) 등록 장소 조회
 //    @GetMapping("/api/user/place")
+
+
+
+
 
 }

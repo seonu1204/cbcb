@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+
 import java.util.Map;
+
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 
@@ -24,7 +26,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
     List<Place> findByNameContainsOrAddressContains(@Param(value = "keyword") String keyword);
 
     // 검색 필터링
-
 
     // 장소 상세정보
     @Query(value = "select * from place p where p.place_id = :id", nativeQuery = true)

@@ -1,7 +1,6 @@
 package capstone.cbcb.dto.place;
 
 import capstone.cbcb.domain.place.UserPlace;
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,9 +16,9 @@ public class UserPlaceResponseDto {
     private String tags;
     private String latitude;
     private String longitude;
-
     private int userPlaceLike;
     private int report;
+
 
     public UserPlaceResponseDto(UserPlace entity) {
         this.userPlaceId = entity.getUserPlaceId();

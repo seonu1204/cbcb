@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -61,10 +62,10 @@ public class PlaceController {
     }
 
 
+
     // 검색 목록 - 필터링
 //    @GetMapping("/api/place/search/filter/{keyword}")
 //    public ResponseEntity<List<PlaceResponseDto>> searchFiltered(@RequestBody )
-
 
 
 
@@ -73,7 +74,6 @@ public class PlaceController {
     @GetMapping("/api/place/detail/{place_id}")
     public ResponseEntity<PlaceResponseDto> findById(@PathVariable String place_id){
         PlaceResponseDto place = placeService.findById(place_id);
-
 
 //        String[] images = new String[4];
 
@@ -118,4 +118,7 @@ public class PlaceController {
 //        images[3] = "/resources/image/" + place_id+ "/img_b.jpg";
 //    }
 
+
 }
+
+

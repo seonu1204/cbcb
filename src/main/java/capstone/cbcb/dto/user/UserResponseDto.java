@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 public class UserResponseDto {
 
     private int user_id;
-
     private String name;
     private String email;
     private String password;

@@ -1,6 +1,5 @@
 package capstone.cbcb.service;
 
-
 import capstone.cbcb.domain.coordinate.userPlaceCoordinate.UserCoordinate;
 import capstone.cbcb.domain.coordinate.userPlaceCoordinate.UserCoordinateRepository;
 import capstone.cbcb.domain.place.UserPlace;
@@ -84,6 +83,7 @@ public class UserPlaceService {
         return new UserPlaceResponseDto(userPlace);
     }
 
+
     // 사용자 장소 좋아요
     @Transactional
     public UserPlaceResponseDto like(int userPlaceId) {
@@ -98,7 +98,7 @@ public class UserPlaceService {
 //    // id로 사용자 장소 찾기 (사용자가 등록한 장소 목록) -> user 쪽에서 구현하도록 수정
 //    @Transactional(readOnly = true)
 //    public List<UserPlaceResponseDto> findByIdList(int user_id){
-//        List<UserPlace> placeList = userPlaceRepository.findByIdList(user_id);
+//        List<UserPlace> placeList = userPlaceRepository.findByIdList(user_id);\
 //        List<UserPlaceResponseDto> userPlaceResponseDtoList = new ArrayList<>();
 //
 //        // dto 로 변환
@@ -108,6 +108,7 @@ public class UserPlaceService {
 //        }
 //        return userPlaceResponseDtoList;
 //    }
+
 
 
     // 사용자 장소 목록 전체 조회
@@ -137,10 +138,5 @@ public class UserPlaceService {
             userCoordinateRepository.save(userCoordinate);
         }
     }
-
-
-
-
-
-
 }
+

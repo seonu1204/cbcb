@@ -1,12 +1,11 @@
 package capstone.cbcb.service;
 
+
 import capstone.cbcb.domain.bookmark.Bookmark;
 import capstone.cbcb.domain.bookmark.BookmarkRepository;
 import capstone.cbcb.domain.place.Place;
 import capstone.cbcb.domain.place.PlaceRepository;
-import capstone.cbcb.domain.place.UserPlace;
 import capstone.cbcb.dto.place.PlaceResponseDto;
-import capstone.cbcb.dto.place.UserPlaceResponseDto;
 import capstone.cbcb.dto.user.UserDecodeJWTDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 @Slf4j
@@ -49,7 +47,6 @@ public class PlaceService {
         }
         return placeResponseDtoList;
     }
-
 
     // 테마별 리스트 데이터
     @Transactional(readOnly = true)
@@ -99,6 +96,7 @@ public class PlaceService {
 
     }
 
+
     // 검색 (장소 이름 기준)
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByName(String keyword) {
@@ -115,12 +113,15 @@ public class PlaceService {
 
     }
 
-    // 장소 1개 검색(상세  정보)
+
+    // 장소 1개 검색(상세 정보)
+
     @Transactional(readOnly = true)
     public PlaceResponseDto findById(String id) {
         Place place = placeRepository.findById(id);
         return new PlaceResponseDto(place);
     }
+
 
     // 장소 즐겨찾기
     @Transactional
@@ -143,6 +144,7 @@ public class PlaceService {
         placeRepository.save(place);
         return new PlaceResponseDto(place);
     }
+
 
 //    @Transactional
 //    public List<PlaceResponseDto> searchChatBot(Map<String, String> keyword) {
@@ -178,9 +180,5 @@ public class PlaceService {
 //        return placeResponseDtoList;
 //
 //    }
-
-
-
-
 
 }

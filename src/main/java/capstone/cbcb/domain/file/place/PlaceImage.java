@@ -1,6 +1,5 @@
 //package capstone.cbcb.domain.file.place;
-//
-//
+
 //import jakarta.persistence.*;
 //import lombok.*;
 //
@@ -21,4 +20,5 @@
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "imagePath")
 //    private String imagePath;
+
 //}

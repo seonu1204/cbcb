@@ -5,10 +5,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
+
 
 public interface UserPlaceRepository extends JpaRepository<UserPlace, Long> {
-
 
       // 사용자 id로 장소 조회 (마이페이지용)
       @Query(value = "select * from user_place p " +
@@ -28,5 +27,4 @@ public interface UserPlaceRepository extends JpaRepository<UserPlace, Long> {
                   " from user_place p " +
                   " where p.latitude = :lat and p.longitude = :lon)", nativeQuery = true)
       UserPlace existsByCoordinate(@Param("lat") String lat, @Param("lon") String lon);
-
 }

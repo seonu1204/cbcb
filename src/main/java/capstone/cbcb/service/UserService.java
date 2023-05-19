@@ -9,10 +9,16 @@ import capstone.cbcb.dto.user.UserRequestDto;
 //import capstone.cbcb.dto.user.UserUpdateRequestDto;
 
 
+import capstone.cbcb.dto.user.UserResponseDto;
+import capstone.cbcb.dto.user.UserUpdateRequestDto;
 import capstone.cbcb.infra.jwt.JwtFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Slf4j
 @Service
@@ -71,36 +77,37 @@ public class UserService {
 
     }
 
-//    public void updateUser(int user_id, String name, String mycar, String phone_number, String nickname) {
-//        if (name != null) {
-//            userRepository.updateName(user_id, name);
-//        }
-//        else if (mycar != null) {
-//            userRepository.updateMycar(user_id, mycar);
-//        }
-//
-//        else if (phone_number != null) {
-//            userRepository.updatePhone_number(user_id, phone_number);
-//        }
-//
-//        else {
-//            userRepository.updateNickname(user_id, nickname);
-//        }
-//    }
 
-//    public User userUpdate(String email, UserUpdateRequestDto userUpdateRequestDto) throws Exception {
-//
-//        User entity = userRepository.findByEmail(userUpdateRequestDto.getEmail())
-//                .orElseThrow(() -> new Exception("존재하지 않는 유저 정보 입니다."));
-//
-//        User update = userRepository.userUpdate(email, userUpdateRequestDto);
-//        for ( User user : update) {
-//            UserResponseDto userResponseDto = new UserResponseDto(user);
-//
-//        }
-//
-//        entity.userUpdate(email, userUpdateRequestDto);
-//        return entity;
-//    }
+    // 사용자 정보 수정
+    @Transactional
+    public void userUpdate(String email, UserUpdateRequestDto userUpdateRequestDto) throws Exception {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new Exception("존재하지 않는 유저 정보 입니다."));
+
+        user.userUpdate(userUpdateRequestDto);
+    }
+
+    // 로그아웃
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String token = request.getHeader(JwtFactory.HEADER_ACCESS_TOKEN);
+        if (token != null) {
+            jwtFactory.invalidateToken(token, response);
+        }
+    }
+
+    // 회원탈퇴
+    public void deleteUser(int user_id) {
+        userRepository.deleteById((long) user_id);
+    }
+
+    // 마이페이지
+    @Transactional(readOnly = true)
+    public UserResponseDto myPage(String email) throws Exception {
+       User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new Exception("존재하지 않는 유저 정보 입니다."));
+        return new UserResponseDto(user);
+    }
+
 }
 

@@ -35,8 +35,4 @@ public class PlaceResponseDto {
         this.theme = entity.getTheme();
         this.place_like = entity.getPlace_like();
     }
-
-
-
-
 }

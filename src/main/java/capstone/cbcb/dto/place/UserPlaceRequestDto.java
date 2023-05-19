@@ -1,7 +1,7 @@
 package capstone.cbcb.dto.place;
 
 import capstone.cbcb.domain.place.UserPlace;
-import jakarta.persistence.Column;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserPlaceRequestDto {
-
 
     private int userPlaceId;
     private int user_id;
@@ -53,7 +52,4 @@ public class UserPlaceRequestDto {
                 .report(report)
                 .build();
     }
-
-
-
 }
