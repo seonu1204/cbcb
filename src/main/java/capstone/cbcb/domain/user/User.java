@@ -1,5 +1,6 @@
 package capstone.cbcb.domain.user;
 
+
 import capstone.cbcb.dto.user.UserUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,6 +26,7 @@ public class User {
     private int eco_lv;
     private String nickname;
 
+
     @Builder
     public User(int user_id, String name, String email, String password, String mycar, String phone_number, int eco_lv, String nickname) {
         this.user_id = user_id;
@@ -45,4 +47,5 @@ public class User {
         this.phone_number = userUpdateRequestDto.getPhone_number();
         this.nickname = userUpdateRequestDto.getNickname();
     }
+
 }

@@ -2,6 +2,7 @@ package capstone.cbcb.controller;
 
 import capstone.cbcb.domain.user.User;
 import capstone.cbcb.domain.user.UserRepository;
+
 import capstone.cbcb.dto.place.PlaceResponseDto;
 import capstone.cbcb.dto.user.*;
 import capstone.cbcb.infra.jwt.JwtFactory;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import java.util.Set;
 
 @Slf4j
@@ -28,8 +30,8 @@ public class UserController {
     private final UserRepository userRepository;
 
     private final UserService userService;
-
     private final JwtFactory jwtFactory;
+
 
     // 회원가입
     @PostMapping("/join")
@@ -99,6 +101,7 @@ public class UserController {
         UserDecodeJWTDTO user = (UserDecodeJWTDTO) httpSession.getAttribute("USER");
         System.out.printf("user");
     }
+
 
     // 사용자 정보 수정
     @PatchMapping("/profile/{email}")

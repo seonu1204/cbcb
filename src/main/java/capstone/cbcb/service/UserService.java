@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -76,6 +77,7 @@ public class UserService {
 
     }
 
+
     // 사용자 정보 수정
     @Transactional
     public void userUpdate(String email, UserUpdateRequestDto userUpdateRequestDto) throws Exception {
@@ -106,5 +108,6 @@ public class UserService {
                 .orElseThrow(() -> new Exception("존재하지 않는 유저 정보 입니다."));
         return new UserResponseDto(user);
     }
+
 }
 

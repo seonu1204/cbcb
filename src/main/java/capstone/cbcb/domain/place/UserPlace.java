@@ -1,11 +1,9 @@
 package capstone.cbcb.domain.place;
 
 
-import capstone.cbcb.dto.place.UserPlaceResponseDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import capstone.cbcb.dto.place.UserPlaceUpdateRequestDTO;
+import jakarta.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,18 +18,32 @@ public class UserPlace {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String userPlaceId;
 
-    private int userPlaceLike;
+    @Column(name = "userplace_id")
+    private int userPlaceId;
+    private int user_id;
     private String address;
+    @Column(name = "userplace_name")
+    private String userPlaceName;
+    private String descript;
+    private String tags;
+    private String latitude;
+    private String longitude;
+    @Column(name = "userplace_like")
+    private int userPlaceLike;
     private int report;
 
 
     // 업데이트
-    public void update(UserPlaceResponseDto userPlaceResponseDto) {
-        this.userPlaceId = userPlaceResponseDto.getUserPlaceId();
-        this.userPlaceLike = userPlaceResponseDto.getUserPlaceLike();
-        this.address = userPlaceResponseDto.getAddress();
-        this.report = userPlaceResponseDto.getReport();
+    public void update(UserPlaceUpdateRequestDTO userPlaceUpdateRequestDTO) {
+        this.userPlaceName = userPlaceUpdateRequestDTO.getUserPlaceName();
+        this.descript = userPlaceUpdateRequestDTO.getDescript();
+        this.tags = userPlaceUpdateRequestDTO.getTags();
     }
+
+    public void setReport(int count) {
+        this.report = count;
+    }
+    public void setUserPlaceLike(int count) {this.report = count;}
+
 }

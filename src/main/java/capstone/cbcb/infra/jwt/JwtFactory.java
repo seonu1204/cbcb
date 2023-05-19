@@ -6,10 +6,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,9 +15,11 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+
 
 @Component
 @Slf4j
@@ -53,8 +53,8 @@ public class JwtFactory {
 
     private Algorithm generateSign() {
         return Algorithm.HMAC256("jwtProperty.getKey()");
-
     }
+
 
     public String generateAccessToken(int userId, String email, String name, String myCar, int eco_lv, String nickname, String phoneNumber) {
 
@@ -78,6 +78,7 @@ public class JwtFactory {
      * @param token : req token
      * @return : AuthUser
      */
+
     public UserDecodeJWTDTO decodeJwt(final String token) throws Exception {
 
         DecodedJWT decodedJWT = isValidToken(token)
@@ -90,6 +91,7 @@ public class JwtFactory {
         String eco_lv = decodedJWT.getClaim(ECO_LV).asString();
         String nickname = decodedJWT.getClaim(NICK_NAME).asString();
         String phoneNumber = decodedJWT.getClaim(PHONE_NUMBER).asString();
+
 
         return UserDecodeJWTDTO.builder()
                 .email(email)
@@ -122,6 +124,7 @@ public class JwtFactory {
 
         return Optional.of(decodedJWT);
     }
+
 
     private Set<String> validTokens = new HashSet<>();
 

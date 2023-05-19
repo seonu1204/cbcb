@@ -1,6 +1,5 @@
 package capstone.cbcb.dto.user;
 
-import capstone.cbcb.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponseDTO {
+
     private String jwtToken;
     private int user_id;
     private String name;

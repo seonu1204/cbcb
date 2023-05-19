@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class PlaceResponseDto {
 
     private String place_id;
-    private String placeName;
+    private String place_name;
     private String address;
     private String contact;
     private String camp_env;
@@ -23,7 +23,7 @@ public class PlaceResponseDto {
 
     public PlaceResponseDto(Place entity) {
         this.place_id = entity.getPlace_id();
-        this.placeName = entity.getPlaceName();
+        this.place_name = entity.getPlaceName();
         this.address = entity.getAddress();
         this.contact = entity.getContact();
         this.camp_env = entity.getCamp_env();
@@ -35,8 +35,4 @@ public class PlaceResponseDto {
         this.theme = entity.getTheme();
         this.place_like = entity.getPlace_like();
     }
-
-
-
-
 }
