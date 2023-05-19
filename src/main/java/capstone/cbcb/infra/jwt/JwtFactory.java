@@ -47,8 +47,8 @@ public class JwtFactory {
 
     private Algorithm generateSign() {
         return Algorithm.HMAC256("jwtProperty.getKey()");
-
     }
+
 
     public String generateAccessToken(int userId, String email, String name, String myCar, int eco_lv, String nickname  ,String phoneNumber) {
 
@@ -72,10 +72,15 @@ public class JwtFactory {
      * @param token : req token
      * @return : AuthUser
      */
+
+
     public UserDecodeJWTDTO decodeJwt(final String token) throws Exception {
+
 
         DecodedJWT decodedJWT = isValidToken(token)
                 .orElseThrow(() -> new Exception());
+
+
 
         String email = decodedJWT.getClaim(EMAIL).asString();
         String userId = decodedJWT.getClaim(USER_ID).asString();
@@ -111,7 +116,7 @@ public class JwtFactory {
         try {
             decodedJWT = verifier.verify(token);
         } catch (Exception e) {
-            throw new Exception("잘못된 정보의 TOKEN 입니다.");
+            throw new Exception(" 잘못된 정보의 TOKEN 입니다. ");
         }
 
         return Optional.of(decodedJWT);

@@ -32,4 +32,6 @@ public class Place {
     private String theme;
     private int place_like;
 
+
+    public void setPlaceLike(int count) {this.place_like = count;}
 }

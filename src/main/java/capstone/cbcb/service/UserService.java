@@ -4,7 +4,6 @@ import capstone.cbcb.domain.user.User;
 import capstone.cbcb.domain.user.UserRepository;
 import capstone.cbcb.dto.user.LoginRequestDTO;
 import capstone.cbcb.dto.user.UserRequestDto;
-import capstone.cbcb.dto.user.UserResponseDto;
 
 
 //import capstone.cbcb.dto.user.UserUpdateRequestDto;
