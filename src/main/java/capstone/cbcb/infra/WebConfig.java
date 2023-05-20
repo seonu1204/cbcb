@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-<<<<<<< HEAD
-=======
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
->>>>>>> f12f1ddbf0c21e5b5ffab39888d3314038a2467e
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Component
@@ -30,8 +27,6 @@ public class WebConfig implements WebMvcConfigurer {
         filterRegistrationBean.setDispatcherTypes(DispatcherType.REQUEST, DispatcherType.ERROR);
         return filterRegistrationBean;
     }
-<<<<<<< HEAD
-=======
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -40,5 +35,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH") // 허용할 HTTP 메서드 설정
                 .allowedHeaders("*"); // 허용할 헤더 설정
     }
->>>>>>> f12f1ddbf0c21e5b5ffab39888d3314038a2467e
+
 }

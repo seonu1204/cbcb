@@ -6,7 +6,6 @@ import capstone.cbcb.domain.bookmark.BookmarkRepository;
 import capstone.cbcb.domain.place.Place;
 import capstone.cbcb.domain.place.PlaceRepository;
 import capstone.cbcb.dto.place.PlaceResponseDto;
-import capstone.cbcb.dto.user.UserDecodeJWTDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,6 @@ public class PlaceService {
 
     private final PlaceRepository placeRepository;
     private final BookmarkRepository bookmarkRepository;
-
 
     // 추천지 리스트 데이터
     @Transactional(readOnly = true)
@@ -47,6 +45,7 @@ public class PlaceService {
         }
         return placeResponseDtoList;
     }
+
 
     // 테마별 리스트 데이터
     @Transactional(readOnly = true)
@@ -115,7 +114,6 @@ public class PlaceService {
 
 
     // 장소 1개 검색(상세 정보)
-
     @Transactional(readOnly = true)
     public PlaceResponseDto findById(String id) {
         Place place = placeRepository.findById(id);
@@ -125,15 +123,24 @@ public class PlaceService {
 
     // 장소 즐겨찾기
     @Transactional
-    public PlaceResponseDto bookmark(String place_id, UserDecodeJWTDTO userDecodeJWTDTO) {
+    public PlaceResponseDto bookmark(int user_id, String place_id) {
 
-        Bookmark bookmark = new Bookmark(userDecodeJWTDTO.getUser_id(), place_id);
+        Bookmark bookmark = new Bookmark(user_id, place_id);
         bookmarkRepository.save(bookmark);
 
         Place byId = placeRepository.findById(place_id);
 
         return new PlaceResponseDto(byId);
     }
+
+
+    // 장소 즐겨찾기 해제
+    @Transactional
+    public void bookmarkDelete(String place_id) {
+        Bookmark place = bookmarkRepository.findByPlaceId(place_id);
+        bookmarkRepository.delete(place);
+    }
+
 
     // 장소 좋아요
     @Transactional
@@ -146,39 +153,44 @@ public class PlaceService {
     }
 
 
-//    @Transactional
-//    public List<PlaceResponseDto> searchChatBot(Map<String, String> keyword) {
-//
-//        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
-//        List<Place> list = new ArrayList<>();
-//        int len = keyword.size();
-//
-//        for( String address : keyword.keySet() ) {
-//            if (address == "GPE" || address == "CITY") {
-//
-//            }
-//        }
-//
-//
-//
-//
-//        if(len == 4) {
-//            list = placeRepository.findBy4Keyword(keyword);
-//        } else if(len == 3) {
-//            list = placeRepository.findBy3Keyword(keyword);
-//        } else if (len == 2) {
-//            list = placeRepository.findBy2Keyword(keyword);
-//        } else {
-//            list = placeRepository.findBy1Keyword(keyword);
-//        }
-//
-//        // dto로 변환
-//        for( Place place : list ) {
-//            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
-//            placeResponseDtoList.add(placeResponseDto);
-//        }
-//        return placeResponseDtoList;
-//
-//    }
+    // 검색 기능 (챗봇)
+    @Transactional
+    public List<PlaceResponseDto> searchChatBot(String gpe, String city, String season, String theme) {
+
+        List<Place> list = placeRepository.searchChatbot(gpe, city, season, theme);
+        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
+        // dto로 변환
+        for( Place place : list ) {
+            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+            placeResponseDtoList.add(placeResponseDto);
+        }
+        return placeResponseDtoList;
+
+    }
+
+
+    // 사용자가 즐겨찾기한 장소 리스트 조회 - (마이페이지용)
+    @Transactional(readOnly = true)
+    public List<PlaceResponseDto> findBookmarkList(int userId) {
+
+        List<String> list = bookmarkRepository.findByUserId(userId);
+        List<Place> placeList = new ArrayList<>();
+
+        // id로 Place 리스트 변환
+        for (String id : list) {
+            Place place = placeRepository.findById(id);
+            placeList.add(place);
+        }
+
+        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
+        // dto로 변환
+        for( Place place : placeList ) {
+            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+            placeResponseDtoList.add(placeResponseDto);
+        }
+        return placeResponseDtoList;
+    }
 
 }

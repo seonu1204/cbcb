@@ -95,20 +95,19 @@ public class UserPlaceService {
     }
 
 
-//    // id로 사용자 장소 찾기 (사용자가 등록한 장소 목록) -> user 쪽에서 구현하도록 수정
-//    @Transactional(readOnly = true)
-//    public List<UserPlaceResponseDto> findByIdList(int user_id){
-//        List<UserPlace> placeList = userPlaceRepository.findByIdList(user_id);\
-//        List<UserPlaceResponseDto> userPlaceResponseDtoList = new ArrayList<>();
-//
-//        // dto 로 변환
-//        for( UserPlace place : placeList ) {
-//            UserPlaceResponseDto userPlaceResponseDto = new UserPlaceResponseDto(place);
-//            userPlaceResponseDtoList.add(userPlaceResponseDto);
-//        }
-//        return userPlaceResponseDtoList;
-//    }
+    // id로 사용자 장소 찾기 (사용자가 등록한 장소 목록) - (마이페이지용)
+    @Transactional(readOnly = true)
+    public List<UserPlaceResponseDto> findMyPlace(int user_id){
+        List<UserPlace> placeList = userPlaceRepository.findByIdList(user_id);
+        List<UserPlaceResponseDto> userPlaceResponseDtoList = new ArrayList<>();
 
+        // dto 로 변환
+        for( UserPlace place : placeList ) {
+            UserPlaceResponseDto userPlaceResponseDto = new UserPlaceResponseDto(place);
+            userPlaceResponseDtoList.add(userPlaceResponseDto);
+        }
+        return userPlaceResponseDtoList;
+    }
 
 
     // 사용자 장소 목록 전체 조회

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
+
 @NoArgsConstructor
 public class PlaceResponseDto {
 
@@ -35,4 +36,5 @@ public class PlaceResponseDto {
         this.theme = entity.getTheme();
         this.place_like = entity.getPlace_like();
     }
+
 }

@@ -60,7 +60,7 @@ public class UserPlaceController {
     }
 
     // 사용자 장소 좋아요
-    @PatchMapping("/api/userplace/like/{userPlaceId}")
+    @PatchMapping("/api/user/like/{userPlaceId}")
     public ResponseEntity<UserPlaceResponseDto> like(@PathVariable int userPlaceId) {
         UserPlaceResponseDto userPlaceResponseDto = userPlaceService.like(userPlaceId);
         return ResponseEntity.ok(userPlaceResponseDto);
@@ -73,8 +73,18 @@ public class UserPlaceController {
         return ResponseEntity.ok(placeResponseDtoList);
     }
 
-    // 사용자(본인) 등록 장소 조회
-//    @GetMapping("/api/user/place")
+
+    // 사용자(본인) 등록 장소 조회 - (마이페이지용)
+    @GetMapping("/api/user/place")
+    public ResponseEntity<List<UserPlaceResponseDto>> findMyPlace(HttpServletRequest request) {
+        UserDecodeJWTDTO user =(UserDecodeJWTDTO)request.getSession(true).getAttribute(USER);
+        int userId = user.getUser_id();
+
+        List<UserPlaceResponseDto> placeResponseDtoList = userPlaceService.findMyPlace(userId);
+        return ResponseEntity.ok(placeResponseDtoList);
+    }
+
+
 
 
 
