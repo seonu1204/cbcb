@@ -37,6 +37,8 @@ dependencies {
 
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation files('/path/to/my-library.jar')
 }
 
 
