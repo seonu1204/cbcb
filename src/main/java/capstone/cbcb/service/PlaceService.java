@@ -112,6 +112,20 @@ public class PlaceService {
 
     }
 
+//    // 검색 - 필터링
+//    @Transactional(readOnly = true)
+//    public List<PlaceResponseDto> searchByFilters(String keyword,List<String> themes, List<String> facils) {
+//        List<Place> placeList = placeRepository.searchByFilters(themes, facils);
+//        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+//
+//        // dto로 변환
+//        for( Place place : placeList ) {
+//            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+//            placeResponseDtoList.add(placeResponseDto);
+//        }
+//        return placeResponseDtoList;
+//    }
+
 
     // 장소 1개 검색(상세 정보)
     @Transactional(readOnly = true)

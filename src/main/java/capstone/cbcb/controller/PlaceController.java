@@ -58,9 +58,15 @@ public class PlaceController {
     }
 
 
-    // 검색 목록 - 필터링
+//    // 검색 목록 - 필터링
 //    @GetMapping("/api/place/search/filter/{keyword}")
-//    public ResponseEntity<List<PlaceResponseDto>> searchFiltered(@RequestBody )
+//    public ResponseEntity<List<PlaceResponseDto>> searchByFilters(
+//            @PathVariable String keyword,
+//            @RequestParam(required = false) List<String> themes,
+//            @RequestParam(required = false) List<String> facils) {
+//        List<PlaceResponseDto> placeResponseDtoList = placeService.searchByFilters(keyword, themes, facils);
+//        return ResponseEntity.ok(placeResponseDtoList);
+//    }
 
 
     // 장소 상세정보 조회
@@ -90,13 +96,12 @@ public class PlaceController {
         return ResponseEntity.ok(bookmark);
     }
 
+
     // 장소 즐겨찾기 해제
     @DeleteMapping("/api/bookmark/{place_id}")
     public void bookmarkDelete(@PathVariable String place_id) {
         placeService.bookmarkDelete(place_id);
     }
-
-
 
 
     // 장소 좋아요
