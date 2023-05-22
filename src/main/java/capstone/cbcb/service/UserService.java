@@ -68,36 +68,17 @@ public class UserService {
 
     }
 
-//    public void updateUser(int user_id, String name, String mycar, String phone_number, String nickname) {
-//        if (name != null) {
-//            userRepository.updateName(user_id, name);
-//        }
-//        else if (mycar != null) {
-//            userRepository.updateMycar(user_id, mycar);
-//        }
-//
-//        else if (phone_number != null) {
-//            userRepository.updatePhone_number(user_id, phone_number);
-//        }
-//
-//        else {
-//            userRepository.updateNickname(user_id, nickname);
-//        }
-//    }
 
-//    public User userUpdate(String email, UserUpdateRequestDto userUpdateRequestDto) throws Exception {
-//
-//        User entity = userRepository.findByEmail(userUpdateRequestDto.getEmail())
-//                .orElseThrow(() -> new Exception("존재하지 않는 유저 정보 입니다."));
-//
-//        User update = userRepository.userUpdate(email, userUpdateRequestDto);
-//        for ( User user : update) {
-//            UserResponseDto userResponseDto = new UserResponseDto(user);
-//
-//        }
-//
-//        entity.userUpdate(email, userUpdateRequestDto);
-//        return entity;
-//    }
+
+    public UserResponseDto userUpdate(String email, UserUpdateRequestDto userUpdateRequestDto) throws Exception {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new Exception("존재하지 않는 유저 정보 입니다."));
+
+        user.userUpdate(userUpdateRequestDto);
+        return new UserResponseDto(user);
+
+
+    }
 }
 

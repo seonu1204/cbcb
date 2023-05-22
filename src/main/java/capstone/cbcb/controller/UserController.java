@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @CrossOrigin
@@ -55,7 +54,7 @@ public class UserController {
         // 로그인 아이디 없음
         // 비밀번호 없음
         if(StringUtils.isEmpty(dto.getEmail())
-        || StringUtils.isEmpty(dto.getPassword())){
+                || StringUtils.isEmpty(dto.getPassword())){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -68,18 +67,13 @@ public class UserController {
     private void test(HttpSession httpSession){
         UserDecodeJWTDTO user = (UserDecodeJWTDTO) httpSession.getAttribute("USER");
 
-                
+
         System.out.printf("user");
     }
 
-//    @PatchMapping("/profile")
-//    public ResponseEntity<List<UserResponseDto>> userUpdate(@PathVariable String email, @RequestBody UserUpdateRequestDto userUpdateRequestDto) throws Exception {
-//        User user = userService.userUpdate(email, userUpdateRequestDto);
-//
-//        List<UserResponseDto> userResponseDtoList = new ArrayList<>();
-//        userResponseDtoList.add(new UserResponseDto(user));
-//
-//        return ResponseEntity.ok(userResponseDtoList);
-//    }
+    @PatchMapping("/profile")
+    public UserResponseDto userUpdate(@PathVariable String email, @RequestBody UserUpdateRequestDto userUpdateRequestDto) throws Exception {
+        return userService.userUpdate(email, userUpdateRequestDto);
+    }
 }
 

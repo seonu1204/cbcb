@@ -25,7 +25,7 @@ public class User {
     private int eco_lv;
     private String nickname;
 
-    public void userUpdate(String email, UserUpdateRequestDto userUpdateRequestDto) {
+    public void userUpdate(UserUpdateRequestDto userUpdateRequestDto) {
         this.name = name;
         this.mycar = mycar;
         this.phone_number = phone_number;
