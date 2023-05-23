@@ -84,10 +84,10 @@ public class BoardController {
 
         // page 갯수 20개
         // 현재 사용자가 3페이지
-        // 1 2 3
+        // 1 2 3  -> statpage=1, endpage=3
         // 현재 사용자가 7페이지
         // 7 8 9
-        // 보여지는 페이지 갯수 3개
+        // 보여지는 페이지 갯수 3개 ->blockLimit 변수
         // 총 페이지 갯수 8개
 
         model.addAttribute("boardList", boardList);
