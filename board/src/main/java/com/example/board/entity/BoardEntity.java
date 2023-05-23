@@ -42,6 +42,7 @@ public class BoardEntity extends BaseEntity {
         return boardEntity;
     }
 
+    //save.html에서 입력한 값을 boardDTO로 담아온 후, entity로 set
     public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setId(boardDTO.getId());

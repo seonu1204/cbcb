@@ -14,11 +14,11 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 public class BaseEntity {
-    @CreationTimestamp
+    @CreationTimestamp //생성되었을때 시간
     @Column(updatable = false)
     private LocalDateTime createdTime;
 
-    @UpdateTimestamp
-    @Column(insertable = false)
+    @UpdateTimestamp //업데이트가 되었을때 시간
+    @Column(insertable = false) //인서트할때는 관여 안하게끔
     private LocalDateTime updatedTime;
 }

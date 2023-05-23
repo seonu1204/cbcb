@@ -14,6 +14,7 @@
         <th>date</th>
         <th>hits</th>
     </tr>
+    <--! 제목을 클릭하면 게시글로 -->
     <tr th:each="board: ${boardList}">
         <td th:text="${board.id}"></td>
         <td><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></td>
