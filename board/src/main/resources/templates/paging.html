@@ -25,10 +25,10 @@
 </table>
 <!-- 첫번째 페이지로 이동 -->
 <!-- /board/paging?page=1 -->
-<a th:href="@{/board/paging(page=1)}">First</a>
+<a th:href="@{/board/paging(page=1)}">처음</a>
 <!-- 이전 링크 활성화 비활성화 -->
 <!-- boardList.getNumber() 사용자:2페이지 getNumber()=1 -->
-<a th:href="${boardList.first} ? '#' : @{/board/paging(page=${boardList.number})}">prev</a>
+<a th:href="${boardList.first} ? '#' : @{/board/paging(page=${boardList.number})}">이전</a>
 
 <!-- 페이지 번호 링크(현재 페이지는 숫자만)
         for(int page=startPage; page<=endPage; page++)-->
@@ -43,9 +43,9 @@
 
 <!-- 다음 링크 활성화 비활성화
     사용자: 2페이지, getNumber: 1, 3페이지-->
-<a th:href="${boardList.last} ? '#' : @{/board/paging(page=${boardList.number + 2})}">next</a>
+<a th:href="${boardList.last} ? '#' : @{/board/paging(page=${boardList.number + 2})}">다음</a>
 <!-- 마지막 페이지로 이동 -->
-<a th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
+<a th:href="@{/board/paging(page=${boardList.totalPages})}">끝</a>
 
 </body>
 <script>
