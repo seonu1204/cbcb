@@ -3,8 +3,12 @@ package capstone.cbcb.dto.place;
 import capstone.cbcb.domain.place.Place;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+
+@Setter
+
 
 @NoArgsConstructor
 public class PlaceResponseDto {
@@ -22,6 +26,14 @@ public class PlaceResponseDto {
     private String theme;
     private int place_like;
 
+    // 이미지 경로 관련
+    private String[] images = new String[4];
+
+    // response 에는 좌표까지
+    private String latitude;
+    private String longitude;
+
+
     public PlaceResponseDto(Place entity) {
         this.place_id = entity.getPlace_id();
         this.place_name = entity.getPlaceName();
@@ -37,4 +49,12 @@ public class PlaceResponseDto {
         this.place_like = entity.getPlace_like();
     }
 
+    // 사진 파일 경로 배열
+    public void setImages() {
+        String pre = "https://cbcb-bk.s3.ap-northeast-2.amazonaws.com/image/";
+        this.images[0] = pre + this.place_id+ "/camp_intro_0.jpg";
+        this.images[1] = pre + this.place_id+ "/camp_intro_1.jpg";
+        this.images[2] = pre + this.place_id+ "/camp_intro_2.jpg";
+        this.images[3] = pre + this.place_id+ "/img_b.jpg";
+    }
 }

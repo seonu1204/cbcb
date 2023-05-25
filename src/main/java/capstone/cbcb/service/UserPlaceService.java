@@ -25,10 +25,10 @@ public class UserPlaceService {
     private final UserService userService;
 
 
-    // 사용자 장소 등록
+    // 사용자 장소 등록 - 지도로 위치 선택
     @Transactional
-    public UserPlaceResponseDto save(UserPlaceRequestDto userPlaceRequestDto,
-                                     int userId) {
+    public UserPlaceResponseDto saveByMap(UserPlaceRequestDto userPlaceRequestDto,
+                                          int userId) {
 
         String latitude = userPlaceRequestDto.getLatitude();
         String longitude = userPlaceRequestDto.getLongitude();
@@ -50,6 +50,30 @@ public class UserPlaceService {
         return new UserPlaceResponseDto(userPlace);
     }
 
+
+    // 사용자 장소 등록 - 주소로 위치 선택
+    @Transactional
+    public UserPlaceResponseDto saveByAddress(UserPlaceRequestDto userPlaceRequestDto,
+                                          int userId) {
+
+        String address = userPlaceRequestDto.getAddress();
+
+        UserPlace existed = userPlaceRepository.findByAddress(address);
+
+        // 이미 존재한다면 예외 처리
+        if(existed != null) {
+            return new UserPlaceResponseDto();
+        }
+
+        // 존재하지 않을 경우 장소 등록
+        userPlaceRequestDto.setUser_id(userId);  // 사용자 id 넣어줌
+        UserPlace userPlace = userPlaceRepository.save(userPlaceRequestDto.toEntity());
+
+        // 좌표 등록
+        registerUserCoordinate(userPlace);
+
+        return new UserPlaceResponseDto(userPlace);
+    }
 
     // 사용자 장소 수정
     @Transactional

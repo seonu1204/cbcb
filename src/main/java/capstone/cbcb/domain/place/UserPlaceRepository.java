@@ -27,4 +27,8 @@ public interface UserPlaceRepository extends JpaRepository<UserPlace, Long> {
                   " from user_place p " +
                   " where p.latitude = :lat and p.longitude = :lon)", nativeQuery = true)
       UserPlace existsByCoordinate(@Param("lat") String lat, @Param("lon") String lon);
+
+
+      // 주소로 장소 조회
+      UserPlace findByAddress(@Param("address") String address);
 }

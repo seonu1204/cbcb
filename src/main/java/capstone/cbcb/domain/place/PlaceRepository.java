@@ -2,6 +2,7 @@ package capstone.cbcb.domain.place;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -23,10 +24,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
             " p.address like %:keyword%", nativeQuery = true)
     List<Place> findByNameContainsOrAddressContains(@Param(value = "keyword") String keyword);
 
-//    // 검색 필터링
-//    @Query(value = "SELECT * FROM place p WHERE p.theme LIKE %:themes% AND p.facils LIKE %:facils%", nativeQuery = true)
-//    List<Place> searchByFilters(@Param(value = "themes") List<String> themes,
-//                                @Param(value = "facils") List<String> facils);
 
     // 장소 상세정보
     @Query(value = "SELECT * FROM place p WHERE p.place_id = :id", nativeQuery = true)

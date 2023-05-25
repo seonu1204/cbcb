@@ -5,7 +5,6 @@ import capstone.cbcb.dto.place.UserPlaceRequestDto;
 import capstone.cbcb.dto.place.UserPlaceResponseDto;
 import capstone.cbcb.dto.place.UserPlaceUpdateRequestDTO;
 import capstone.cbcb.dto.user.UserDecodeJWTDTO;
-import capstone.cbcb.service.PlaceService;
 import capstone.cbcb.service.UserPlaceService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +25,34 @@ public class UserPlaceController {
     private final UserPlaceService userPlaceService;
 
 
-    // 사용자 장소 등록
-    @PostMapping("/api/place")
-    public ResponseEntity<UserPlaceResponseDto> register(@RequestBody UserPlaceRequestDto userPlaceRequestDto,
+    // 사용자 장소 등록 - 지도로 위치 선택
+    @PostMapping("/api/register/coordinate")
+    public ResponseEntity<UserPlaceResponseDto> registerByMap(@RequestBody UserPlaceRequestDto userPlaceRequestDto,
                                                          HttpServletRequest request) {
         UserDecodeJWTDTO user =(UserDecodeJWTDTO)request.getSession(true).getAttribute(USER);
         int userId = user.getUser_id();
 
-        UserPlaceResponseDto userPlaceResponseDto = userPlaceService.save(userPlaceRequestDto, userId);
+        UserPlaceResponseDto userPlaceResponseDto = userPlaceService.saveByMap(userPlaceRequestDto, userId);
         return ResponseEntity.ok(userPlaceResponseDto);
     }
+
+    // 사용자 장소 등록 - 주소로 위치 선택
+    @PostMapping("/api/register/address")
+    public ResponseEntity<UserPlaceResponseDto> registerByAddress(@RequestBody UserPlaceRequestDto userPlaceRequestDto,
+                                                                  HttpServletRequest request) {
+        UserDecodeJWTDTO user =(UserDecodeJWTDTO)request.getSession(true).getAttribute(USER);
+        int userId = user.getUser_id();
+
+        UserPlaceResponseDto userPlaceResponseDto = userPlaceService.saveByAddress(userPlaceRequestDto, userId);
+        return ResponseEntity.ok(userPlaceResponseDto);
+    }
+
+
+
+
+
+
+
 
     // 사용자 장소 수정
     @PatchMapping("/api/user/edit/{userPlaceId}")
@@ -65,6 +82,7 @@ public class UserPlaceController {
         UserPlaceResponseDto userPlaceResponseDto = userPlaceService.like(userPlaceId);
         return ResponseEntity.ok(userPlaceResponseDto);
     }
+
 
     // 사용자 등록 장소 조회 (메인화면)
     @GetMapping("/api/userplace")

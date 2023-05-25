@@ -11,7 +11,6 @@ import java.io.Serializable;
 @Builder
 @Getter
 @Entity
-
 @Setter
 @IdClass(CoordinateId.class)
 public class Coordinate implements Serializable {

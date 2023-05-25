@@ -18,6 +18,7 @@ import java.io.IOException;
 @Slf4j
 public class LoginCheckFilter extends OncePerRequestFilter {
 
+
     //로그인이 필요하지 않은 페이지 url 요청들
     private static final String[] whitelist = {"/", "/api/user/join", "/api/user/login", "/api/place/*", "/api/chatbot/place" , "/api/user/logout"};
 

@@ -32,6 +32,7 @@ public class PlaceController {
     // 테마별 리스트 조회
     @GetMapping("/api/place/theme/{theme}")
     public ResponseEntity<List<PlaceResponseDto>> findByTheme(@PathVariable String theme) {
+
         List<PlaceResponseDto> placeResponseDtoList = placeService.findByTheme(theme);
         return ResponseEntity.ok(placeResponseDtoList);
     }
@@ -58,28 +59,21 @@ public class PlaceController {
     }
 
 
-//    // 검색 목록 - 필터링
-//    @GetMapping("/api/place/search/filter/{keyword}")
-//    public ResponseEntity<List<PlaceResponseDto>> searchByFilters(
-//            @PathVariable String keyword,
-//            @RequestParam(required = false) List<String> themes,
-//            @RequestParam(required = false) List<String> facils) {
-//        List<PlaceResponseDto> placeResponseDtoList = placeService.searchByFilters(keyword, themes, facils);
-//        return ResponseEntity.ok(placeResponseDtoList);
-//    }
+    // 검색 목록 - 필터링
+    @GetMapping("/api/place/search/filter/{keyword}")
+    public ResponseEntity<List<PlaceResponseDto>> searchByFilters(
+            @PathVariable String keyword,
+            @RequestParam(required = false) List<String> themes,
+            @RequestParam(required = false) List<String> facils) {
+        List<PlaceResponseDto> placeResponseDtoList = placeService.searchByFilters(keyword, themes, facils);
+        return ResponseEntity.ok(placeResponseDtoList);
+    }
 
 
     // 장소 상세정보 조회
     @GetMapping("/api/place/detail/{place_id}")
     public ResponseEntity<PlaceResponseDto> findById(@PathVariable String place_id) {
         PlaceResponseDto place = placeService.findById(place_id);
-
-//        String[] images = new String[4];
-
-//        setImages(images, place_id);
-//        model.addAttribute("place", place);
-//        model.addAttribute("images", images);
-
         return ResponseEntity.ok(place);
     }
 
@@ -118,8 +112,8 @@ public class PlaceController {
             @RequestParam(value = "city", required = false) String city,
             @RequestParam(value = "season", required = false) String season,
             @RequestParam(value = "theme", required = false) String theme) {
-        List<PlaceResponseDto> placeResponseDto = placeService.searchChatBot(gpe, city, season, theme);
-        return ResponseEntity.ok(placeResponseDto);
+        List<PlaceResponseDto> placeList = placeService.searchChatBot(gpe, city, season, theme);
+        return ResponseEntity.ok(placeList);
     }
 
 
@@ -132,16 +126,6 @@ public class PlaceController {
         List<PlaceResponseDto> placeResponseDto = placeService.findBookmarkList(userId);
         return ResponseEntity.ok(placeResponseDto);
     }
-
-
-//    // 사진 파일
-//    public void setImages(String[] images, String place_id) {
-//        images[0] = "/resources/image/" + place_id+ "/camp_intro_0.jpg";
-//        images[1] = "/resources/image/" + place_id+ "/camp_intro_1.jpg";
-//        images[2] = "/resources/image/" + place_id+ "/camp_intro_2.jpg";
-//        images[3] = "/resources/image/" + place_id+ "/img_b.jpg";
-//    }
-
 
 }
 
