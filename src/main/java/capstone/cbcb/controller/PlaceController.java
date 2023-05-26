@@ -1,5 +1,6 @@
 package capstone.cbcb.controller;
 
+import capstone.cbcb.domain.place.Place;
 import capstone.cbcb.dto.place.PlaceResponseDto;
 import capstone.cbcb.dto.user.UserDecodeJWTDTO;
 import capstone.cbcb.service.PlaceService;
@@ -63,8 +64,8 @@ public class PlaceController {
     @GetMapping("/api/place/search/filter/{keyword}")
     public ResponseEntity<List<PlaceResponseDto>> searchByFilters(
             @PathVariable String keyword,
-            @RequestParam(required = false) List<String> themes,
-            @RequestParam(required = false) List<String> facils) {
+            @RequestParam(value = "themes", required = false) List<String> themes,
+            @RequestParam(value = "facils", required = false) List<String> facils) {
         List<PlaceResponseDto> placeResponseDtoList = placeService.searchByFilters(keyword, themes, facils);
         return ResponseEntity.ok(placeResponseDtoList);
     }
@@ -104,6 +105,7 @@ public class PlaceController {
         PlaceResponseDto placeResponseDto = placeService.like(placeId);
         return ResponseEntity.ok(placeResponseDto);
     }
+
 
     // 검색 기능 (챗봇)
     @GetMapping("/api/chatbot/place")

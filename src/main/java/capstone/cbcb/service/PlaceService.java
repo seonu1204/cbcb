@@ -5,6 +5,7 @@ import capstone.cbcb.domain.bookmark.Bookmark;
 import capstone.cbcb.domain.bookmark.BookmarkRepository;
 import capstone.cbcb.domain.coordinate.placeCoordinate.Coordinate;
 import capstone.cbcb.domain.coordinate.placeCoordinate.CoordinateRepository;
+import capstone.cbcb.domain.facility.FacilityRepository;
 import capstone.cbcb.domain.facility.QFacility;
 import capstone.cbcb.domain.place.Place;
 import capstone.cbcb.domain.place.PlaceRepository;
@@ -32,10 +33,13 @@ public class PlaceService {
     private final PlaceRepository placeRepository;
     private final BookmarkRepository bookmarkRepository;
 
-    @Autowired
+//    @Autowired
     private final CoordinateRepository coordinateRepository;
 
+    private final FacilityRepository facilityRepository;
+
     private final EntityManager entityManager;
+
 
     // 추천지 리스트 데이터
     @Transactional(readOnly = true)
@@ -58,9 +62,11 @@ public class PlaceService {
             placeResponseDto.setImages();
 
             Coordinate coordinate = coordinateRepository.findByPlaceId(placeResponseDto.getPlace_id());
-            placeResponseDto.setLatitude(coordinate.getLatitude());
-            placeResponseDto.setLongitude(coordinate.getLongitude());
 
+            if(coordinate != null) {
+                placeResponseDto.setLatitude(coordinate.getLatitude());
+                placeResponseDto.setLongitude(coordinate.getLongitude());
+            }
             placeResponseDtoList.add(placeResponseDto);
         }
         return placeResponseDtoList;
@@ -95,8 +101,12 @@ public class PlaceService {
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByAddress(String loc) {
 
-        List<Place> locList = placeRepository.findByAddressContains(loc);
+        List<Place> locList = new ArrayList<>();
+        locList = (loc.equals("전국"))
+                ? placeRepository.findAll()
+                : placeRepository.findByAddressContains(loc);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
 
         // dto 로 변환
         for( Place place : locList ) {
@@ -104,13 +114,13 @@ public class PlaceService {
             placeResponseDto.setImages();
 
             Coordinate coordinate = coordinateRepository.findByPlaceId(placeResponseDto.getPlace_id());
-            placeResponseDto.setLatitude(coordinate.getLatitude());
-            placeResponseDto.setLongitude(coordinate.getLongitude());
-
+            if(coordinate != null) {
+                placeResponseDto.setLatitude(coordinate.getLatitude());
+                placeResponseDto.setLongitude(coordinate.getLongitude());
+            }
             placeResponseDtoList.add(placeResponseDto);
         }
         return placeResponseDtoList;
-
     }
 
 
@@ -118,7 +128,10 @@ public class PlaceService {
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByAddressAndTheme(String loc, String theme) {
 
-        List<Place> placeList = placeRepository.findByAddressContainsAndThemeContains(loc, theme);
+        List<Place> placeList = new ArrayList<>();
+        placeList = (loc.equals("전국"))
+                ? placeRepository.findByThemeContains("theme")
+                : placeRepository.findByAddressContainsAndThemeContains(loc, theme);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto 로 변환
@@ -127,8 +140,10 @@ public class PlaceService {
             placeResponseDto.setImages();
 
             Coordinate coordinate = coordinateRepository.findByPlaceId(placeResponseDto.getPlace_id());
-            placeResponseDto.setLatitude(coordinate.getLatitude());
-            placeResponseDto.setLongitude(coordinate.getLongitude());
+            if(coordinate != null) {
+                placeResponseDto.setLatitude(coordinate.getLatitude());
+                placeResponseDto.setLongitude(coordinate.getLongitude());
+            }
 
             placeResponseDtoList.add(placeResponseDto);
         }
@@ -150,8 +165,10 @@ public class PlaceService {
             placeResponseDto.setImages();
 
             Coordinate coordinate = coordinateRepository.findByPlaceId(placeResponseDto.getPlace_id());
-            placeResponseDto.setLatitude(coordinate.getLatitude());
-            placeResponseDto.setLongitude(coordinate.getLongitude());
+            if(coordinate != null) {
+                placeResponseDto.setLatitude(coordinate.getLatitude());
+                placeResponseDto.setLongitude(coordinate.getLongitude());
+            }
 
             placeResponseDtoList.add(placeResponseDto);
         }
@@ -179,7 +196,7 @@ public class PlaceService {
                 .orElse(null);
 
         BooleanExpression facilityExpression = facils.stream()
-                .map(facility -> qFacility.place_id.eq(qPlace.place_id).and(qFacility.amenities.like("%" + facility + "%")))
+                .map(facility -> qFacility.place_id_f.eq(qPlace.place_id).and(qFacility.amenities.like("%" + facility + "%")))
                 .reduce(BooleanExpression::and)
                 .orElse(null);
 
@@ -187,9 +204,10 @@ public class PlaceService {
         JPAQuery<Place> query = new JPAQuery<>(entityManager);
         List<Place> result = query.select(qPlace)
                 .from(qPlace)
-                .leftJoin(qFacility).on(qFacility.place_id.eq(qPlace.place_id))
+                .leftJoin(qFacility).on(qFacility.place_id_f.eq(qPlace.place_id))
                 .where(keywordExpression, themeExpression, facilityExpression)
                 .fetch();
+
 
 
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
@@ -200,8 +218,10 @@ public class PlaceService {
             placeResponseDto.setImages();
 
             Coordinate coordinate = coordinateRepository.findByPlaceId(placeResponseDto.getPlace_id());
-            placeResponseDto.setLatitude(coordinate.getLatitude());
-            placeResponseDto.setLongitude(coordinate.getLongitude());
+            if(coordinate != null) {
+                placeResponseDto.setLatitude(coordinate.getLatitude());
+                placeResponseDto.setLongitude(coordinate.getLongitude());
+            }
 
             placeResponseDtoList.add(placeResponseDto);
         }
@@ -216,9 +236,15 @@ public class PlaceService {
         PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
         placeResponseDto.setImages();
 
+        // 부대 시설 추가
+        String amenities = facilityRepository.findByPlaceIdF(place.getPlace_id());
+        placeResponseDto.setAmenities(amenities);
+
         Coordinate coordinate = coordinateRepository.findByPlaceId(placeResponseDto.getPlace_id());
-        placeResponseDto.setLatitude(coordinate.getLatitude());
-        placeResponseDto.setLongitude(coordinate.getLongitude());
+        if(coordinate != null) {
+            placeResponseDto.setLatitude(coordinate.getLatitude());
+            placeResponseDto.setLongitude(coordinate.getLongitude());
+        }
 
         return placeResponseDto;
     }
@@ -270,8 +296,11 @@ public class PlaceService {
             placeResponseDto.setImages();
 
             Coordinate coordinate = coordinateRepository.findByPlaceId(placeResponseDto.getPlace_id());
-            placeResponseDto.setLatitude(coordinate.getLatitude());
-            placeResponseDto.setLongitude(coordinate.getLongitude());
+
+            if(coordinate != null) {
+                placeResponseDto.setLatitude(coordinate.getLatitude());
+                placeResponseDto.setLongitude(coordinate.getLongitude());
+            }
 
             placeResponseDtoList.add(placeResponseDto);
         }
@@ -300,8 +329,10 @@ public class PlaceService {
             placeResponseDto.setImages();
 
             Coordinate coordinate = coordinateRepository.findByPlaceId(placeResponseDto.getPlace_id());
-            placeResponseDto.setLatitude(coordinate.getLatitude());
-            placeResponseDto.setLongitude(coordinate.getLongitude());
+            if(coordinate != null) {
+                placeResponseDto.setLatitude(coordinate.getLatitude());
+                placeResponseDto.setLongitude(coordinate.getLongitude());
+            }
 
             placeResponseDtoList.add(placeResponseDto);
         }

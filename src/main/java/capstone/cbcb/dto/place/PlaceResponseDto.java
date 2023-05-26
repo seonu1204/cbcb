@@ -33,6 +33,9 @@ public class PlaceResponseDto {
     private String latitude;
     private String longitude;
 
+    // 상세조회 시 보일 부대시설
+    private String amenities;
+
 
     public PlaceResponseDto(Place entity) {
         this.place_id = entity.getPlace_id();

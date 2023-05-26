@@ -44,6 +44,8 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
                               @Param(value = "theme") String theme);
 
 
+
+
     List<Place> findAll();
 
 }

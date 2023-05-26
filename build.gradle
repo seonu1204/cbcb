@@ -63,7 +63,6 @@ querydsl {
 	querydslSourcesDir = querydslDir
 }
 
-
 /* 10-7. build시 사용할 SourceSet 추가 */
 sourceSets {
 	main.java.srcDir querydslDir
@@ -80,7 +79,9 @@ compileQuerydsl {
 }
 
 
-
+bootJar {
+	jar.enabled = true // 빌드시 jar 을 실행
+}
 
 
 

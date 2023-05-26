@@ -1,7 +1,5 @@
 package capstone.cbcb.infra;
 
-import capstone.cbcb.infra.filter.LoginCheckFilter;
-import capstone.cbcb.infra.jwt.JwtFactory;
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import capstone.cbcb.infra.filter.LoginCheckFilter;
+import capstone.cbcb.infra.jwt.JwtFactory;
+
 
 @Component
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000") // 허용할 도메인을 명시적으로 설정
+                .allowedOrigins("*") // 허용할 도메인을 명시적으로 설정
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .allowedHeaders("*");
     }

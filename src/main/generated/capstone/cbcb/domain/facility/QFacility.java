@@ -21,7 +21,7 @@ public class QFacility extends EntityPathBase<Facility> {
 
     public final StringPath amenities = createString("amenities");
 
-    public final StringPath place_id = createString("place_id");
+    public final StringPath place_id_f = createString("place_id_f");
 
     public QFacility(String variable) {
         super(Facility.class, forVariable(variable));

@@ -12,7 +12,8 @@ public class Facility {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String place_id;
+    @Column(name = "place_id_f")
+    private String place_id_f;
     private String amenities;
 
 
