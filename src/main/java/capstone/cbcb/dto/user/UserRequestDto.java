@@ -1,7 +1,6 @@
 package capstone.cbcb.dto.user;
 
 import capstone.cbcb.domain.user.User;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserRequestDto {
+
     private int user_id;
 
     private String name;

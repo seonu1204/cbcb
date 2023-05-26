@@ -4,12 +4,21 @@ import capstone.cbcb.domain.user.User;
 import capstone.cbcb.domain.user.UserRepository;
 import capstone.cbcb.dto.user.LoginRequestDTO;
 import capstone.cbcb.dto.user.UserRequestDto;
+
+
+//import capstone.cbcb.dto.user.UserUpdateRequestDto;
+
+
 import capstone.cbcb.dto.user.UserResponseDto;
 import capstone.cbcb.dto.user.UserUpdateRequestDto;
 import capstone.cbcb.infra.jwt.JwtFactory;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Slf4j
 @Service
@@ -69,16 +78,35 @@ public class UserService {
     }
 
 
-
-    public UserResponseDto userUpdate(String email, UserUpdateRequestDto userUpdateRequestDto) throws Exception {
+    // 사용자 정보 수정
+    @Transactional
+    public void userUpdate(String email, UserUpdateRequestDto userUpdateRequestDto) throws Exception {
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new Exception("존재하지 않는 유저 정보 입니다."));
 
         user.userUpdate(userUpdateRequestDto);
-        return new UserResponseDto(user);
-
-
     }
-}
 
+    // 로그아웃
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String token = request.getHeader(JwtFactory.HEADER_ACCESS_TOKEN);
+        if (token != null) {
+            jwtFactory.invalidateToken(token, response);
+        }
+    }
+
+    // 회원탈퇴
+    public void deleteUser(int user_id) {
+        userRepository.deleteById((long) user_id);
+    }
+
+    // 마이페이지
+    @Transactional(readOnly = true)
+    public UserResponseDto myPage(String email) throws Exception {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new Exception("존재하지 않는 유저 정보 입니다."));
+        return new UserResponseDto(user);
+    }
+
+}

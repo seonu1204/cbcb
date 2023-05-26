@@ -1,5 +1,8 @@
 package capstone.cbcb.service;
 
+
+import capstone.cbcb.domain.bookmark.Bookmark;
+import capstone.cbcb.domain.bookmark.BookmarkRepository;
 import capstone.cbcb.domain.place.Place;
 import capstone.cbcb.domain.place.PlaceRepository;
 import capstone.cbcb.dto.place.PlaceResponseDto;
@@ -10,13 +13,39 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
-@RequiredArgsConstructor // Repository를 주입하기 위해 사용
+@RequiredArgsConstructor // Repository 를 주입하기 위해 사용
 @Service
 public class PlaceService {
 
     private final PlaceRepository placeRepository;
+    private final BookmarkRepository bookmarkRepository;
+
+    // 추천지 리스트 데이터
+    @Transactional(readOnly = true)
+    public List<PlaceResponseDto> recommend() {
+        List<Place> placeList = placeRepository.findAll();
+        List<Place> recommendList = new ArrayList<>();
+        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
+        int idx = 0;
+
+        Random random = new Random();
+        for(int i = 0; i < 5; i++) {
+            idx = random.nextInt(placeList.size())+1;
+            recommendList.add(placeList.get(idx));
+        }
+
+        // dto 로 변환
+        for( Place place : recommendList ) {
+            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+            placeResponseDtoList.add(placeResponseDto);
+        }
+        return placeResponseDtoList;
+    }
+
 
     // 테마별 리스트 데이터
     @Transactional(readOnly = true)
@@ -24,7 +53,7 @@ public class PlaceService {
         List<Place> themeList = placeRepository.findByThemeContains(theme);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
-        // dto로 변환
+        // dto 로 변환
         for( Place place : themeList ) {
             PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
             placeResponseDtoList.add(placeResponseDto);
@@ -71,7 +100,7 @@ public class PlaceService {
     @Transactional(readOnly = true)
     public List<PlaceResponseDto> findByName(String keyword) {
 
-        List<Place> placeList = placeRepository.findByPlace_nameContainsOrAddressContains(keyword);
+        List<Place> placeList = placeRepository.findByNameContainsOrAddressContains(keyword);
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto로 변환
@@ -83,20 +112,99 @@ public class PlaceService {
 
     }
 
-
-//    // 장소 1개 조회 (상세정보)
+//    // 검색 - 필터링
 //    @Transactional(readOnly = true)
-//    public PlaceResponseDto getDetails(String place_id) {
-//        Place place = placeRepository.findById(place_id);
-//        return new PlaceResponseDto(place);
+//    public List<PlaceResponseDto> searchByFilters(String keyword,List<String> themes, List<String> facils) {
+//        List<Place> placeList = placeRepository.searchByFilters(themes, facils);
+//        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+//
+//        // dto로 변환
+//        for( Place place : placeList ) {
+//            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+//            placeResponseDtoList.add(placeResponseDto);
+//        }
+//        return placeResponseDtoList;
 //    }
 
 
-//    // 즐겨찾기
-//    @Transactional
-//    public PlaceResponseDto bookmark(String place_id) {
-//        Place place = placeRepository.bookmark();
-//        return new PlaceResponseDto(place);
-//    }
+    // 장소 1개 검색(상세 정보)
+    @Transactional(readOnly = true)
+    public PlaceResponseDto findById(String id) {
+        Place place = placeRepository.findById(id);
+        return new PlaceResponseDto(place);
+    }
+
+
+    // 장소 즐겨찾기
+    @Transactional
+    public PlaceResponseDto bookmark(int user_id, String place_id) {
+
+        Bookmark bookmark = new Bookmark(user_id, place_id);
+        bookmarkRepository.save(bookmark);
+
+        Place byId = placeRepository.findById(place_id);
+
+        return new PlaceResponseDto(byId);
+    }
+
+
+    // 장소 즐겨찾기 해제
+    @Transactional
+    public void bookmarkDelete(String place_id) {
+        Bookmark place = bookmarkRepository.findByPlaceId(place_id);
+        bookmarkRepository.delete(place);
+    }
+
+
+    // 장소 좋아요
+    @Transactional
+    public PlaceResponseDto like(String placeId) {
+        Place place = placeRepository.findById(placeId);
+        place.setPlaceLike(place.getPlace_like()+1);
+
+        placeRepository.save(place);
+        return new PlaceResponseDto(place);
+    }
+
+
+    // 검색 기능 (챗봇)
+    @Transactional
+    public List<PlaceResponseDto> searchChatBot(String gpe, String city, String season, String theme) {
+
+        List<Place> list = placeRepository.searchChatbot(gpe, city, season, theme);
+        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
+        // dto로 변환
+        for( Place place : list ) {
+            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+            placeResponseDtoList.add(placeResponseDto);
+        }
+        return placeResponseDtoList;
+
+    }
+
+
+    // 사용자가 즐겨찾기한 장소 리스트 조회 - (마이페이지용)
+    @Transactional(readOnly = true)
+    public List<PlaceResponseDto> findBookmarkList(int userId) {
+
+        List<String> list = bookmarkRepository.findByUserId(userId);
+        List<Place> placeList = new ArrayList<>();
+
+        // id로 Place 리스트 변환
+        for (String id : list) {
+            Place place = placeRepository.findById(id);
+            placeList.add(place);
+        }
+
+        List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
+
+        // dto로 변환
+        for( Place place : placeList ) {
+            PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
+            placeResponseDtoList.add(placeResponseDto);
+        }
+        return placeResponseDtoList;
+    }
 
 }

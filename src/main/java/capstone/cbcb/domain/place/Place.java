@@ -1,9 +1,6 @@
 package capstone.cbcb.domain.place;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,13 +11,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 @Entity
+@Table(name = "place")
 public class Place {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String place_id;
 
-    private String place_name;
+    private String placeName;
     private String address;
     private String contact;
     private String camp_env;
@@ -31,5 +29,7 @@ public class Place {
     private String facils;
     private String theme;
     private int place_like;
+
+    public void setPlaceLike(int count) {this.place_like = count;}
 
 }
