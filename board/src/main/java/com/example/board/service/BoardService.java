@@ -4,8 +4,10 @@ import com.example.board.dto.BoardDTO;
 import com.example.board.entity.BoardEntity;
 
 import com.example.board.entity.BoardFileEntity;
+import com.example.board.entity.UserEntity;
 import com.example.board.repository.BoardFileRepository;
 import com.example.board.repository.BoardRepository;
+import com.example.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +32,10 @@ import java.util.Optional;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardFileRepository boardFileRepository;
+
+    /*새롭게 추가된내용*/
+    private final UserRepository userRepository;
+
     public void save(BoardDTO boardDTO) throws IOException {
         // 파일 첨부 여부에 따라 로직 분리
         if (boardDTO.getBoardFile().isEmpty()) {
@@ -54,7 +60,15 @@ public class BoardService {
             String savePath = "C:/springboot_img/" + storedFileName; // 4. C:/springboot_img/9802398403948_내사진.jpg
 //            String savePath = "/Users/사용자이름/springboot_img/" + storedFileName; // C:/springboot_img/9802398403948_내사진.jpg
             boardFile.transferTo(new File(savePath)); // 5.
+
+            /*새로 추가*/
+            // 사용자 정보 가져오기
+            UserEntity userEntity = userRepository.findById(boardDTO.getUser_id())
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO); //디비 저장 전이라 id값이 없음.
+            boardEntity.setUser(userEntity); // 사용자 설정
+
             Long savedId = boardRepository.save(boardEntity).getId();
             BoardEntity board = boardRepository.findById(savedId).get();
 
@@ -118,7 +132,7 @@ public class BoardService {
 
         // 목록: id, writer, title, hits, createdTime
 
-        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardWriter(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));
+        Page<BoardDTO> boardDTOS = boardEntities.map(board -> new BoardDTO(board.getId(), board.getBoardTitle(), board.getBoardHits(), board.getCreatedTime()));
         return boardDTOS;
     }
 }

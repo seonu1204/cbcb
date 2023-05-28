@@ -20,11 +20,11 @@ public class BoardEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Long id;
 
-    @Column(length = 20, nullable = false) // 크기 20, not null
-    private String boardWriter;
+  //  @Column(length = 20, nullable = false) // 크기 20, not null
+  //  private String boardWriter;
 
-    @Column // 크기 255, null 가능
-    private String boardPass;
+  //  @Column // 크기 255, null 가능
+  //  private String boardPass;
 
     @Column
     private String boardTitle;
@@ -41,11 +41,15 @@ public class BoardEntity extends BaseEntity {
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
 
+    /*새로추가*/
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user; // 추가된 부분
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
-        boardEntity.setBoardPass(boardDTO.getBoardPass());
+  //      boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+  //      boardEntity.setBoardPass(boardDTO.getBoardPass());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(0);
@@ -57,8 +61,8 @@ public class BoardEntity extends BaseEntity {
     public static BoardEntity toUpdateEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
         boardEntity.setId(boardDTO.getId());
-        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
-        boardEntity.setBoardPass(boardDTO.getBoardPass());
+  //      boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+  //      boardEntity.setBoardPass(boardDTO.getBoardPass());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(boardDTO.getBoardHits());
@@ -67,12 +71,14 @@ public class BoardEntity extends BaseEntity {
 
     public static BoardEntity toSaveFileEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setBoardWriter(boardDTO.getBoardWriter());
-        boardEntity.setBoardPass(boardDTO.getBoardPass());
+   //     boardEntity.setBoardWriter(boardDTO.getBoardWriter());
+   //     boardEntity.setBoardPass(boardDTO.getBoardPass());
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(0);
         boardEntity.setFileAttached(1); // 파일 있음.
         return boardEntity;
     }
+
+
 }
