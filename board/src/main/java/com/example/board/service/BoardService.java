@@ -1,13 +1,13 @@
 package com.example.board.service;
 
+import com.example.board.domain.user.User;
+import com.example.board.domain.user.UserRepository;
 import com.example.board.dto.BoardDTO;
 import com.example.board.entity.BoardEntity;
 
 import com.example.board.entity.BoardFileEntity;
-import com.example.board.entity.UserEntity;
 import com.example.board.repository.BoardFileRepository;
 import com.example.board.repository.BoardRepository;
-import com.example.board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -63,11 +63,15 @@ public class BoardService {
 
             /*새로 추가*/
             // 사용자 정보 가져오기
-            UserEntity userEntity = userRepository.findById(boardDTO.getUser_id())
-                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+//            UserEntity userEntity = userRepository.findById(boardDTO.getUser_id())
+//                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
 
             BoardEntity boardEntity = BoardEntity.toSaveFileEntity(boardDTO); //디비 저장 전이라 id값이 없음.
-            boardEntity.setUser(userEntity); // 사용자 설정
+//            boardEntity.setUser(userEntity); // 사용자 설정
+
+            User user = userRepository.findById(boardDTO.getUser_id()).orElse(null);
+            boardEntity.setUser(user);
 
             Long savedId = boardRepository.save(boardEntity).getId();
             BoardEntity board = boardRepository.findById(savedId).get();

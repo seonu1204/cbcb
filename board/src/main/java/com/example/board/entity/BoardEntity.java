@@ -1,5 +1,6 @@
 package com.example.board.entity;
 
+import com.example.board.domain.user.User;
 import com.example.board.dto.BoardDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,7 +45,7 @@ public class BoardEntity extends BaseEntity {
     /*새로추가*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserEntity user; // 추가된 부분
+    private User user; // 추가된 부분
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO) {
         BoardEntity boardEntity = new BoardEntity();
