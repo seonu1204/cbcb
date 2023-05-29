@@ -1,6 +1,5 @@
 package capstone.cbcb.controller;
 
-import capstone.cbcb.domain.place.Place;
 import capstone.cbcb.dto.place.PlaceResponseDto;
 import capstone.cbcb.dto.user.UserDecodeJWTDTO;
 import capstone.cbcb.service.PlaceService;
@@ -47,7 +46,9 @@ public class PlaceController {
 
     // 지역&테마별 리스트 조회
     @GetMapping("/api/place/{loc}/{theme}")
-    public ResponseEntity<List<PlaceResponseDto>> findByLocAndTheme(@PathVariable String loc, @PathVariable String theme) {
+    public ResponseEntity<List<PlaceResponseDto>> findByLocAndTheme(
+            @PathVariable String loc,
+            @PathVariable String theme) {
         List<PlaceResponseDto> placeResponseDtoList = placeService.findByAddressAndTheme(loc, theme);
         return ResponseEntity.ok(placeResponseDtoList);
     }

@@ -16,7 +16,6 @@ import com.querydsl.jpa.impl.JPAQuery;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -130,8 +129,9 @@ public class PlaceService {
 
         List<Place> placeList = new ArrayList<>();
         placeList = (loc.equals("전국"))
-                ? placeRepository.findByThemeContains("theme")
+                ? placeRepository.findByThemeContains(theme)
                 : placeRepository.findByAddressContainsAndThemeContains(loc, theme);
+
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
 
         // dto 로 변환
@@ -227,6 +227,7 @@ public class PlaceService {
         }
         return placeResponseDtoList;
     }
+
 
 
     // 장소 1개 검색(상세 정보)

@@ -37,21 +37,17 @@ public class UserPlaceController {
     }
 
     // 사용자 장소 등록 - 주소로 위치 선택
-    @PostMapping("/api/register/address")
+    @PostMapping("/api/register/address/{userId}")
     public ResponseEntity<UserPlaceResponseDto> registerByAddress(@RequestBody UserPlaceRequestDto userPlaceRequestDto,
+                                                                  @PathVariable int userId,
                                                                   HttpServletRequest request) {
-        UserDecodeJWTDTO user =(UserDecodeJWTDTO)request.getSession(true).getAttribute(USER);
-        int userId = user.getUser_id();
+//        UserDecodeJWTDTO user =(UserDecodeJWTDTO)request.getSession(true).getAttribute(USER);
+//        int userId = user.getUser_id();
 
+//        log.info(userPlaceRequestDto.getUserPlaceName());
         UserPlaceResponseDto userPlaceResponseDto = userPlaceService.saveByAddress(userPlaceRequestDto, userId);
         return ResponseEntity.ok(userPlaceResponseDto);
     }
-
-
-
-
-
-
 
 
     // 사용자 장소 수정
@@ -70,7 +66,7 @@ public class UserPlaceController {
     }
 
     // 사용자 장소 신고
-    @PatchMapping("/api/place/report/{userPlaceId}")
+    @PatchMapping("/api/user/report/{userPlaceId}")
     public ResponseEntity<UserPlaceResponseDto> report(@PathVariable int userPlaceId) {
         UserPlaceResponseDto userPlaceResponseDto = userPlaceService.report(userPlaceId);
         return ResponseEntity.ok(userPlaceResponseDto);
@@ -93,10 +89,11 @@ public class UserPlaceController {
 
 
     // 사용자(본인) 등록 장소 조회 - (마이페이지용)
-    @GetMapping("/api/user/place")
-    public ResponseEntity<List<UserPlaceResponseDto>> findMyPlace(HttpServletRequest request) {
-        UserDecodeJWTDTO user =(UserDecodeJWTDTO)request.getSession(true).getAttribute(USER);
-        int userId = user.getUser_id();
+    @GetMapping("/api/user/place/{userId}")
+    public ResponseEntity<List<UserPlaceResponseDto>> findMyPlace(HttpServletRequest request,
+                                                                  @PathVariable int userId) {
+//        UserDecodeJWTDTO user =(UserDecodeJWTDTO)request.getSession(true).getAttribute(USER);
+//        int userId = user.getUser_id();
 
         List<UserPlaceResponseDto> placeResponseDtoList = userPlaceService.findMyPlace(userId);
         return ResponseEntity.ok(placeResponseDtoList);
