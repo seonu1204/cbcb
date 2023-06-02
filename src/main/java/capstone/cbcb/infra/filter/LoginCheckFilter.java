@@ -20,7 +20,8 @@ public class LoginCheckFilter extends OncePerRequestFilter {
 
 
     //로그인이 필요하지 않은 페이지 url 요청들
-    private static final String[] whitelist = {"/", "/api/user/join", "/api/user/login", "/api/place/*", "/api/chatbot/place" , "/api/user/logout"};
+    private static final String[] whitelist = {"/", "/api/user/join", "/api/user/login", "/api/place/*"
+            , "/api/chatbot/place" , "/api/user/logout", "/api/userplace", "/api/userplace/*"};
 
     private final String USER = "USER";
     private JwtFactory jwtFactory;

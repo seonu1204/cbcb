@@ -9,6 +9,12 @@ import java.util.List;
 
 public interface UserPlaceRepository extends JpaRepository<UserPlace, Long> {
 
+
+      @Query(value = "SELECT * FROM user_place up WHERE up.userplace_id = :placeId"
+              , nativeQuery = true)
+      UserPlace findById(@Param("placeId") int placeId);
+
+
       // 사용자 id로 장소 조회 (마이페이지용)
       @Query(value = "select * from user_place p " +
               "where p.user_id = :userId", nativeQuery = true)

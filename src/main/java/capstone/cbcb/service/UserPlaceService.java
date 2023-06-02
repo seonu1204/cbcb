@@ -4,6 +4,7 @@ import capstone.cbcb.domain.coordinate.userPlaceCoordinate.UserCoordinate;
 import capstone.cbcb.domain.coordinate.userPlaceCoordinate.UserCoordinateRepository;
 import capstone.cbcb.domain.place.UserPlace;
 import capstone.cbcb.domain.place.UserPlaceRepository;
+import capstone.cbcb.domain.user.UserRepository;
 import capstone.cbcb.dto.place.UserPlaceRequestDto;
 import capstone.cbcb.dto.place.UserPlaceResponseDto;
 import capstone.cbcb.dto.place.UserPlaceUpdateRequestDTO;
@@ -22,6 +23,8 @@ public class UserPlaceService {
 
     private final UserPlaceRepository userPlaceRepository;
     private final UserCoordinateRepository userCoordinateRepository;
+    private final UserRepository userRepository;
+
     private final UserService userService;
 
 
@@ -32,7 +35,6 @@ public class UserPlaceService {
 
         String latitude = userPlaceRequestDto.getLatitude();
         String longitude = userPlaceRequestDto.getLongitude();
-
         UserPlace existed = userPlaceRepository.existsByCoordinate(latitude, longitude);
 
         // 이미 존재한다면 예외 처리
@@ -43,7 +45,6 @@ public class UserPlaceService {
         // 존재하지 않을 경우 장소 등록
         userPlaceRequestDto.setUser_id(userId);  // 사용자 id 넣어줌
         UserPlace userPlace = userPlaceRepository.save(userPlaceRequestDto.toEntity());
-
         // 좌표 등록
         registerUserCoordinate(userPlace);
 
@@ -57,18 +58,15 @@ public class UserPlaceService {
                                           int userId) {
 
         String address = userPlaceRequestDto.getAddress();
-
         UserPlace existed = userPlaceRepository.findByAddress(address);
 
         // 이미 존재한다면 예외 처리
         if(existed != null) {
             return new UserPlaceResponseDto();
         }
-
         // 존재하지 않을 경우 장소 등록
         userPlaceRequestDto.setUser_id(userId);  // 사용자 id 넣어줌
         UserPlace userPlace = userPlaceRepository.save(userPlaceRequestDto.toEntity());
-
         // 좌표 등록
         registerUserCoordinate(userPlace);
 
@@ -143,10 +141,27 @@ public class UserPlaceService {
         // dto 로 변환
         for( UserPlace place : placeList ) {
             UserPlaceResponseDto userPlaceResponseDto = new UserPlaceResponseDto(place);
+            String userEmail = (userRepository.findById(place.getUser_id())).getEmail();
+            userPlaceResponseDto.setUserEmail(userEmail);
+
             userPlaceResponseDtoList.add(userPlaceResponseDto);
         }
         return userPlaceResponseDtoList;
     }
+
+    // 사용자 장소 목록 상세 조회 - 메인화면
+    @Transactional(readOnly = true)
+    public UserPlaceResponseDto findByPlaceId(int placeId) {
+        UserPlace userPlace = userPlaceRepository.findById(placeId);
+        UserPlaceResponseDto userPlaceResponseDto = new UserPlaceResponseDto(userPlace);
+
+        // 사용자 이메일 주입
+        String userEmail = (userRepository.findById(userPlace.getUser_id())).getEmail();
+        userPlaceResponseDto.setUserEmail(userEmail);
+
+        return userPlaceResponseDto;
+    }
+
 
 
     // 사용자 장소 좌표 db 등록

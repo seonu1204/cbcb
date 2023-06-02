@@ -3,8 +3,10 @@ package capstone.cbcb.dto.place;
 import capstone.cbcb.domain.place.UserPlace;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+
 @NoArgsConstructor
 public class UserPlaceResponseDto {
 
@@ -18,6 +20,10 @@ public class UserPlaceResponseDto {
     private String longitude;
     private int userPlaceLike;
     private int report;
+    
+    
+    // 추가
+    private String userEmail;
 
 
     public UserPlaceResponseDto(UserPlace entity) {
@@ -31,5 +37,10 @@ public class UserPlaceResponseDto {
         this.longitude = entity.getLongitude();
         this.userPlaceLike = entity.getUserPlaceLike();
         this.report = entity.getReport();
+
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

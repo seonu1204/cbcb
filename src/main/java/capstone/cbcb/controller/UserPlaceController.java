@@ -28,9 +28,10 @@ public class UserPlaceController {
     // 사용자 장소 등록 - 지도로 위치 선택
     @PostMapping("/api/register/coordinate")
     public ResponseEntity<UserPlaceResponseDto> registerByMap(@RequestBody UserPlaceRequestDto userPlaceRequestDto,
-                                                         HttpServletRequest request) {
-        UserDecodeJWTDTO user =(UserDecodeJWTDTO)request.getSession(true).getAttribute(USER);
-        int userId = user.getUser_id();
+                                                              HttpServletRequest request,
+                                                              @PathVariable int userId) {
+//        UserDecodeJWTDTO user =(UserDecodeJWTDTO)request.getSession(true).getAttribute(USER);
+//        int userId = user.getUser_id();
 
         UserPlaceResponseDto userPlaceResponseDto = userPlaceService.saveByMap(userPlaceRequestDto, userId);
         return ResponseEntity.ok(userPlaceResponseDto);
@@ -80,11 +81,20 @@ public class UserPlaceController {
     }
 
 
+
     // 사용자 등록 장소 조회 (메인화면)
     @GetMapping("/api/userplace")
     public ResponseEntity<List<UserPlaceResponseDto>> findAll() {
         List<UserPlaceResponseDto> placeResponseDtoList = userPlaceService.findAll();
         return ResponseEntity.ok(placeResponseDtoList);
+    }
+
+    // 사용자 등록 장소 상세 조회 (메인화면)
+    @GetMapping("/api/userplace/{placeId}")
+    public ResponseEntity<UserPlaceResponseDto> findByPlaceId(
+            @PathVariable int placeId) {
+        UserPlaceResponseDto userPlaceResponseDto = userPlaceService.findByPlaceId(placeId);
+        return ResponseEntity.ok(userPlaceResponseDto);
     }
 
 

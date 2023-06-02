@@ -188,18 +188,15 @@ public class PlaceService {
         String keywordPattern = "%" + keyword + "%";
         BooleanExpression keywordExpression = qPlace.placeName.likeIgnoreCase(keywordPattern)
                 .or(qPlace.address.likeIgnoreCase(keywordPattern));
-
         // Theme 조건
         BooleanExpression themeExpression = themes.stream()
                 .map(theme -> qPlace.theme.like("%" + theme + "%"))
                 .reduce(BooleanExpression::and)
                 .orElse(null);
-
         BooleanExpression facilityExpression = facils.stream()
                 .map(facility -> qFacility.place_id_f.eq(qPlace.place_id).and(qFacility.amenities.like("%" + facility + "%")))
                 .reduce(BooleanExpression::and)
                 .orElse(null);
-
 
         JPAQuery<Place> query = new JPAQuery<>(entityManager);
         List<Place> result = query.select(qPlace)
@@ -207,11 +204,7 @@ public class PlaceService {
                 .leftJoin(qFacility).on(qFacility.place_id_f.eq(qPlace.place_id))
                 .where(keywordExpression, themeExpression, facilityExpression)
                 .fetch();
-
-
-
         List<PlaceResponseDto> placeResponseDtoList = new ArrayList<>();
-
         // dto로 변환
         for( Place place : result ) {
             PlaceResponseDto placeResponseDto = new PlaceResponseDto(place);
@@ -222,7 +215,6 @@ public class PlaceService {
                 placeResponseDto.setLatitude(coordinate.getLatitude());
                 placeResponseDto.setLongitude(coordinate.getLongitude());
             }
-
             placeResponseDtoList.add(placeResponseDto);
         }
         return placeResponseDtoList;
